@@ -8,8 +8,8 @@ import com.github.ltsopensource.core.support.SystemClock;
  */
 public class DefaultJobRetryTimeGenerator implements JobRetryTimeGenerator {
 
-    @Override
-    public long getNextRetryTriggerTime(Job job, int retryTimes, int retryInterval) {
-        return SystemClock.now() + retryInterval;
-    }
+	@Override
+	public long getNextRetryTriggerTime(Job job, int retryTimes, int retryInterval) {
+		return SystemClock.now() + retryInterval;
+	}
 }

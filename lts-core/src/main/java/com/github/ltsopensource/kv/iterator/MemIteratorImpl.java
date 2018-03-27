@@ -17,7 +17,8 @@ public class MemIteratorImpl<K, V> implements DBIterator<Entry<K, V>> {
     private Iterator<Map.Entry<K, IndexItem<K>>> iterator;
     private DataBlockEngine<K, V> dataBlockEngine;
     private DataCache<K, V> dataCache;
-    private MemIndex<K, V> index;
+    @SuppressWarnings("unused")
+	private MemIndex<K, V> index;
 
     public MemIteratorImpl(MemIndex<K, V> index, DataBlockEngine<K, V> dataBlockEngine, DataCache<K, V> dataCache) {
         this.index = index;

@@ -12,13 +12,16 @@ import com.github.ltsopensource.tasktracker.domain.Response;
 import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
 import com.github.ltsopensource.tasktracker.expcetion.NoAvailableJobRunnerException;
 import com.github.ltsopensource.tasktracker.monitor.TaskTrackerMStatReporter;
+
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author Robert HG (254963746@qq.com) on 2/21/16.
@@ -77,12 +80,17 @@ public class RunnerPoolTest {
         while (true) {
             try {
                 // 如果这个数字还在增长,表示线程还在执行,测试发现 NormalJobRunner 确实还在执行  TestInterruptorJobRunner 会停止
-                System.out.println(NormalJobRunner.l);
-                Thread.sleep(1000L);
+                AtomicLong old = NormalJobRunner.l;
+				System.out.println(old);
+                Thread.sleep(10000L);
+                
+                if((NormalJobRunner.l.get() - old.get()) == 0 ){
+                	break;
+                }
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(runnerPool.getAvailablePoolSize());
+            System.out.println("getAvailablePoolSize:"+runnerPool.getAvailablePoolSize());
         }
     }
 
@@ -96,7 +104,7 @@ public class RunnerPoolTest {
 
         final List<Thread> list = new CopyOnWriteArrayList<Thread>();
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 5; i++) {
             submitJob(threadPoolExecutor, list);
         }
 
@@ -118,7 +126,7 @@ public class RunnerPoolTest {
         submitJob(threadPoolExecutor, list);
 
         try {
-            Thread.sleep(5000000000000L);
+            Thread.sleep(60000*5);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -133,8 +141,15 @@ public class RunnerPoolTest {
                     try {
                         while (true) {
                             Thread.sleep(2000L);
-                            System.out.println("=====" + Thread.currentThread().getName());
+                            
+							//if (new Random().nextInt(10) == 1) {
+								System.out.println("=====" + Thread.currentThread().getName());
+							//}
 
+                            if(new Random().nextInt(10)==1){
+                            	break;
+                            }
+                            
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();

@@ -5,8 +5,8 @@ package com.github.ltsopensource.remoting;
  */
 public interface Future {
 
-    boolean isSuccess();
+	boolean isSuccess();
 
-    Throwable cause();
+	Throwable cause();
 
 }

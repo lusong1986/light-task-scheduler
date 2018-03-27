@@ -6,8 +6,8 @@ package com.github.ltsopensource.tasktracker.runner;
  */
 public interface InterruptibleJobRunner extends JobRunner {
 
-    /**
-     * 当任务被cancel(中断)的时候,调用这个
-     */
-    void interrupt();
+	/**
+	 * 当任务被cancel(中断)的时候,调用这个
+	 */
+	void interrupt();
 }

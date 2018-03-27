@@ -4,6 +4,7 @@ import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.support.SystemClock;
 import com.github.ltsopensource.queue.SchedulerJobQueue;
 import com.github.ltsopensource.queue.domain.JobPo;
+
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.mongodb.morphia.query.UpdateResults;
@@ -34,7 +35,8 @@ public abstract class MongoSchedulerJobQueue extends AbstractMongoJobQueue imple
         return ur.getUpdatedCount() == 1;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public List<JobPo> getNeedGenerateJobPos(Long checkTime, int topSize) {
         Query<JobPo> query = template.createQuery(JobPo.class);
         query.field("relyOnPrevCycle").equal(false);

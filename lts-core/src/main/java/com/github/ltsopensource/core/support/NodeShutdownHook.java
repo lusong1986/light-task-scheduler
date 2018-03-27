@@ -14,21 +14,22 @@ import com.github.ltsopensource.ec.Observer;
  */
 public class NodeShutdownHook {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NodeShutdownHook.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(NodeShutdownHook.class);
 
-    public static void registerHook(AppContext appContext, final String name, final Callable callback) {
-        appContext.getEventCenter().subscribe(new EventSubscriber(name + "_" + appContext.getConfig().getIdentity(), new Observer() {
-            @Override
-            public void onObserved(EventInfo eventInfo) {
-                if (callback != null) {
-                    try {
-                        callback.call();
-                    } catch (Exception e) {
-                        LOGGER.warn("Call shutdown hook {} error", name, e);
-                    }
-                }
-            }
-        }), EcTopic.NODE_SHUT_DOWN);
-    }
+	public static void registerHook(AppContext appContext, final String name, final Callable callback) {
+		appContext.getEventCenter().subscribe(
+				new EventSubscriber(name + "_" + appContext.getConfig().getIdentity(), new Observer() {
+					@Override
+					public void onObserved(EventInfo eventInfo) {
+						if (callback != null) {
+							try {
+								callback.call();
+							} catch (Exception e) {
+								LOGGER.warn("Call shutdown hook {} error", name, e);
+							}
+						}
+					}
+				}), EcTopic.NODE_SHUT_DOWN);
+	}
 
 }

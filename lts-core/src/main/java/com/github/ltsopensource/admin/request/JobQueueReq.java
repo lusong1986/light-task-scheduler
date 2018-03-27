@@ -7,191 +7,221 @@ import java.util.Map;
  * @author Robert HG (254963746@qq.com) on 6/6/15.
  */
 public class JobQueueReq extends PaginationReq {
+	
+    private String id;//依赖用到
 
-    // ------------ 下面是查询条件值 ---------------
-    private String jobId;
-    private String jobType;
-    private String taskId;
-    private String realTaskId;
+	// ------------ 下面是查询条件值 ---------------
+	private String jobId;
+	private String jobType;
+	private String taskId;
+	private String realTaskId;
 
-    private String submitNodeGroup;
+	private String submitNodeGroup;
 
-    private String taskTrackerNodeGroup;
+	private String taskTrackerNodeGroup;
 
-    private Date startGmtCreated;
-    private Date endGmtCreated;
-    private Date startGmtModified;
-    private Date endGmtModified;
+	private Date startGmtCreated;
+	private Date endGmtCreated;
+	private Date startGmtModified;
+	private Date endGmtModified;
 
-    // ------------ 下面是能update的值 -------------------
+	// ------------ 下面是能update的值 -------------------
 
-    private String cronExpression;
+	private String cronExpression;
 
-    private Boolean needFeedback;
+	private Boolean needFeedback;
 
-    private Map<String, String> extParams;
+	private Map<String, String> extParams;
 
-    private Date triggerTime;
+	private Date triggerTime;
 
-    private Integer priority;
+	private Integer priority;
 
-    private Integer maxRetryTimes;
+	private Integer maxRetryTimes;
 
-    private Integer repeatCount;
+	private Integer repeatCount;
 
-    private Long repeatInterval;
+	private Long repeatInterval;
 
-    private Boolean relyOnPrevCycle;
+	private Boolean relyOnPrevCycle;
 
-    public String getJobType() {
-        return jobType;
-    }
+	private String gray;
 
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
-    }
+	private String parentJobId;
+	
+	public String getId() {
+		return id;
+	}
 
-    public String getJobId() {
-        return jobId;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
+	public String getParentJobId() {
+		return parentJobId;
+	}
 
-    public String getTaskId() {
-        return taskId;
-    }
+	public void setParentJobId(String parentJobId) {
+		this.parentJobId = parentJobId;
+	}
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
+	public String getGray() {
+		return gray;
+	}
 
-    public String getSubmitNodeGroup() {
-        return submitNodeGroup;
-    }
+	public void setGray(String gray) {
+		this.gray = gray;
+	}
 
-    public void setSubmitNodeGroup(String submitNodeGroup) {
-        this.submitNodeGroup = submitNodeGroup;
-    }
+	public String getJobType() {
+		return jobType;
+	}
 
-    public String getTaskTrackerNodeGroup() {
-        return taskTrackerNodeGroup;
-    }
+	public void setJobType(String jobType) {
+		this.jobType = jobType;
+	}
 
-    public void setTaskTrackerNodeGroup(String taskTrackerNodeGroup) {
-        this.taskTrackerNodeGroup = taskTrackerNodeGroup;
-    }
+	public String getJobId() {
+		return jobId;
+	}
 
-    public String getCronExpression() {
-        return cronExpression;
-    }
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
 
-    public void setCronExpression(String cronExpression) {
-        this.cronExpression = cronExpression;
-    }
+	public String getTaskId() {
+		return taskId;
+	}
 
-    public Boolean getNeedFeedback() {
-        return needFeedback;
-    }
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
 
-    public void setNeedFeedback(Boolean needFeedback) {
-        this.needFeedback = needFeedback;
-    }
+	public String getSubmitNodeGroup() {
+		return submitNodeGroup;
+	}
 
-    public Map<String, String> getExtParams() {
-        return extParams;
-    }
+	public void setSubmitNodeGroup(String submitNodeGroup) {
+		this.submitNodeGroup = submitNodeGroup;
+	}
 
-    public void setExtParams(Map<String, String> extParams) {
-        this.extParams = extParams;
-    }
+	public String getTaskTrackerNodeGroup() {
+		return taskTrackerNodeGroup;
+	}
 
-    public Integer getPriority() {
-        return priority;
-    }
+	public void setTaskTrackerNodeGroup(String taskTrackerNodeGroup) {
+		this.taskTrackerNodeGroup = taskTrackerNodeGroup;
+	}
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
+	public String getCronExpression() {
+		return cronExpression;
+	}
 
-    public Date getStartGmtCreated() {
-        return startGmtCreated;
-    }
+	public void setCronExpression(String cronExpression) {
+		this.cronExpression = cronExpression;
+	}
 
-    public void setStartGmtCreated(Date startGmtCreated) {
-        this.startGmtCreated = startGmtCreated;
-    }
+	public Boolean getNeedFeedback() {
+		return needFeedback;
+	}
 
-    public Date getEndGmtCreated() {
-        return endGmtCreated;
-    }
+	public void setNeedFeedback(Boolean needFeedback) {
+		this.needFeedback = needFeedback;
+	}
 
-    public void setEndGmtCreated(Date endGmtCreated) {
-        this.endGmtCreated = endGmtCreated;
-    }
+	public Map<String, String> getExtParams() {
+		return extParams;
+	}
 
-    public Date getStartGmtModified() {
-        return startGmtModified;
-    }
+	public void setExtParams(Map<String, String> extParams) {
+		this.extParams = extParams;
+	}
 
-    public void setStartGmtModified(Date startGmtModified) {
-        this.startGmtModified = startGmtModified;
-    }
+	public Integer getPriority() {
+		return priority;
+	}
 
-    public Date getEndGmtModified() {
-        return endGmtModified;
-    }
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
 
-    public void setEndGmtModified(Date endGmtModified) {
-        this.endGmtModified = endGmtModified;
-    }
+	public Date getStartGmtCreated() {
+		return startGmtCreated;
+	}
 
-    public Date getTriggerTime() {
-        return triggerTime;
-    }
+	public void setStartGmtCreated(Date startGmtCreated) {
+		this.startGmtCreated = startGmtCreated;
+	}
 
-    public void setTriggerTime(Date triggerTime) {
-        this.triggerTime = triggerTime;
-    }
+	public Date getEndGmtCreated() {
+		return endGmtCreated;
+	}
 
-    public Integer getMaxRetryTimes() {
-        return maxRetryTimes;
-    }
+	public void setEndGmtCreated(Date endGmtCreated) {
+		this.endGmtCreated = endGmtCreated;
+	}
 
-    public void setMaxRetryTimes(Integer maxRetryTimes) {
-        this.maxRetryTimes = maxRetryTimes;
-    }
+	public Date getStartGmtModified() {
+		return startGmtModified;
+	}
 
-    public Integer getRepeatCount() {
-        return repeatCount;
-    }
+	public void setStartGmtModified(Date startGmtModified) {
+		this.startGmtModified = startGmtModified;
+	}
 
-    public void setRepeatCount(Integer repeatCount) {
-        this.repeatCount = repeatCount;
-    }
+	public Date getEndGmtModified() {
+		return endGmtModified;
+	}
 
-    public Long getRepeatInterval() {
-        return repeatInterval;
-    }
+	public void setEndGmtModified(Date endGmtModified) {
+		this.endGmtModified = endGmtModified;
+	}
 
-    public void setRepeatInterval(Long repeatInterval) {
-        this.repeatInterval = repeatInterval;
-    }
+	public Date getTriggerTime() {
+		return triggerTime;
+	}
 
-    public Boolean getRelyOnPrevCycle() {
-        return relyOnPrevCycle;
-    }
+	public void setTriggerTime(Date triggerTime) {
+		this.triggerTime = triggerTime;
+	}
 
-    public void setRelyOnPrevCycle(Boolean relyOnPrevCycle) {
-        this.relyOnPrevCycle = relyOnPrevCycle;
-    }
+	public Integer getMaxRetryTimes() {
+		return maxRetryTimes;
+	}
 
-    public String getRealTaskId() {
-        return realTaskId;
-    }
+	public void setMaxRetryTimes(Integer maxRetryTimes) {
+		this.maxRetryTimes = maxRetryTimes;
+	}
 
-    public void setRealTaskId(String realTaskId) {
-        this.realTaskId = realTaskId;
-    }
+	public Integer getRepeatCount() {
+		return repeatCount;
+	}
+
+	public void setRepeatCount(Integer repeatCount) {
+		this.repeatCount = repeatCount;
+	}
+
+	public Long getRepeatInterval() {
+		return repeatInterval;
+	}
+
+	public void setRepeatInterval(Long repeatInterval) {
+		this.repeatInterval = repeatInterval;
+	}
+
+	public Boolean getRelyOnPrevCycle() {
+		return relyOnPrevCycle;
+	}
+
+	public void setRelyOnPrevCycle(Boolean relyOnPrevCycle) {
+		this.relyOnPrevCycle = relyOnPrevCycle;
+	}
+
+	public String getRealTaskId() {
+		return realTaskId;
+	}
+
+	public void setRealTaskId(String realTaskId) {
+		this.realTaskId = realTaskId;
+	}
 }

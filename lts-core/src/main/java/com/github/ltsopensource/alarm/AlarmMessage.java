@@ -7,7 +7,9 @@ import java.io.Serializable;
  */
 public class AlarmMessage implements Serializable {
 
-    private long time;
+	private static final long serialVersionUID = 4592538123638930840L;
+
+	private long time;
 
     private AlarmType type;
 

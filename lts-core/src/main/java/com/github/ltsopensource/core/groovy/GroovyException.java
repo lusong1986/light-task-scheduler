@@ -5,7 +5,9 @@ package com.github.ltsopensource.core.groovy;
  */
 public class GroovyException extends Exception{
 
-    public GroovyException() {
+	private static final long serialVersionUID = -1082312300034422142L;
+
+	public GroovyException() {
         super();
     }
 

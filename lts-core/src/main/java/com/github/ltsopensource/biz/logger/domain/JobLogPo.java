@@ -1,274 +1,290 @@
 package com.github.ltsopensource.biz.logger.domain;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.github.ltsopensource.core.constant.Level;
 import com.github.ltsopensource.core.domain.JobType;
 
-import java.util.Map;
-
 /**
- * @author Robert HG (254963746@qq.com) on 8/20/14.
- *         任务执行 日志
+ * @author Robert HG (254963746@qq.com) on 8/20/14. 任务执行 日志
  */
 public class JobLogPo {
 
-    // 日志记录时间
-    private Long logTime;
-    // 日志记录时间
-    private Long gmtCreated;
-    private JobType jobType;
-    // 日志类型
-    private LogType logType;
-    private boolean success;
-    private String msg;
-    private String taskTrackerIdentity;
+	// 日志记录时间
+	private Long logTime;
+	// 日志记录时间
+	private Long gmtCreated;
+	private JobType jobType;
+	// 日志类型
+	private LogType logType;
+	private boolean success;
+	private String msg;
+	private String taskTrackerIdentity;
 
-    // 日志记录级别
-    private Level level;
+	// 日志记录级别
+	private Level level;
 
-    private String jobId;
-    private String taskId;
-    private String realTaskId;
-    /**
-     * 优先级 (数值越大 优先级越低)
-     */
-    private Integer priority = 100;
-    // 提交的节点
-    private String submitNodeGroup;
-    // 执行的节点
-    private String taskTrackerNodeGroup;
+	private String jobId;
+	private String taskId;
+	private String realTaskId;
+	/**
+	 * 优先级 (数值越大 优先级越低)
+	 */
+	private Integer priority = 100;
+	// 提交的节点
+	private String submitNodeGroup;
+	// 执行的节点
+	private String taskTrackerNodeGroup;
 
-    private Map<String, String> extParams;
-    /**
-     * 内部使用的扩展参数
-     */
-    private Map<String, String> internalExtParams;
-    // 是否要反馈给客户端
-    private boolean needFeedback = true;
-    /**
-     * 执行表达式 和 quartz 的一样
-     * 如果这个为空，表示立即执行的
-     */
-    private String cronExpression;
-    /**
-     * 任务的最早出发时间
-     */
-    private Long triggerTime;
+	private Map<String, String> extParams;
+	/**
+	 * 内部使用的扩展参数
+	 */
+	private Map<String, String> internalExtParams;
+	// 是否要反馈给客户端
+	private boolean needFeedback = true;
+	/**
+	 * 执行表达式 和 quartz 的一样 如果这个为空，表示立即执行的
+	 */
+	private String cronExpression;
+	/**
+	 * 任务的最早出发时间
+	 */
+	private Long triggerTime;
 
-    private Integer retryTimes = 0;
-    private Integer maxRetryTimes = 0;
+	private Integer retryTimes = 0;
+	private Integer maxRetryTimes = 0;
 
-    /**
-     * 重复次数
-     */
-    private Integer repeatCount = 0;
-    /**
-     * 已经重复的次数
-     */
-    private Integer repeatedCount = 0;
-    /**
-     * 重复interval
-     */
-    private Long repeatInterval;
+	/**
+	 * 重复次数
+	 */
+	private Integer repeatCount = 0;
+	/**
+	 * 已经重复的次数
+	 */
+	private Integer repeatedCount = 0;
+	/**
+	 * 重复interval
+	 */
+	private Long repeatInterval;
 
-    private Boolean depPreCycle;
+	private Boolean depPreCycle;
 
-    public JobType getJobType() {
-        return jobType;
-    }
+	private String gray; // 从extParams中获取值
 
-    public void setJobType(JobType jobType) {
-        this.jobType = jobType;
-    }
+	public String getGray() {
+		return gray;
+	}
 
-    public Map<String, String> getInternalExtParams() {
-        return internalExtParams;
-    }
+	public void setGray(String gray) {
+		this.gray = gray;
+	}
 
-    public void setInternalExtParams(Map<String, String> internalExtParams) {
-        this.internalExtParams = internalExtParams;
-    }
+	public void setParam(String key, String value) {
+		if (extParams == null) {
+			extParams = new HashMap<String, String>();
+		}
+		extParams.put(key, value);
+	}
 
-    public Integer getRetryTimes() {
-        return retryTimes;
-    }
+	public JobType getJobType() {
+		return jobType;
+	}
 
-    public void setRetryTimes(Integer retryTimes) {
-        this.retryTimes = retryTimes;
-    }
+	public void setJobType(JobType jobType) {
+		this.jobType = jobType;
+	}
 
-    public Long getGmtCreated() {
-        return gmtCreated;
-    }
+	public Map<String, String> getInternalExtParams() {
+		return internalExtParams;
+	}
 
-    public void setGmtCreated(Long gmtCreated) {
-        this.gmtCreated = gmtCreated;
-    }
+	public void setInternalExtParams(Map<String, String> internalExtParams) {
+		this.internalExtParams = internalExtParams;
+	}
 
-    public LogType getLogType() {
-        return logType;
-    }
+	public Integer getRetryTimes() {
+		return retryTimes;
+	}
 
-    public void setLogType(LogType logType) {
-        this.logType = logType;
-    }
+	public void setRetryTimes(Integer retryTimes) {
+		this.retryTimes = retryTimes;
+	}
 
-    public boolean isSuccess() {
-        return success;
-    }
+	public Long getGmtCreated() {
+		return gmtCreated;
+	}
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+	public void setGmtCreated(Long gmtCreated) {
+		this.gmtCreated = gmtCreated;
+	}
 
-    public String getMsg() {
-        return msg;
-    }
+	public LogType getLogType() {
+		return logType;
+	}
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+	public void setLogType(LogType logType) {
+		this.logType = logType;
+	}
 
-    public String getTaskTrackerIdentity() {
-        return taskTrackerIdentity;
-    }
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public void setTaskTrackerIdentity(String taskTrackerIdentity) {
-        this.taskTrackerIdentity = taskTrackerIdentity;
-    }
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
 
-    public Level getLevel() {
-        return level;
-    }
+	public String getMsg() {
+		return msg;
+	}
 
-    public void setLevel(Level level) {
-        this.level = level;
-    }
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
 
-    public String getJobId() {
-        return jobId;
-    }
+	public String getTaskTrackerIdentity() {
+		return taskTrackerIdentity;
+	}
 
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
+	public void setTaskTrackerIdentity(String taskTrackerIdentity) {
+		this.taskTrackerIdentity = taskTrackerIdentity;
+	}
 
-    public String getTaskId() {
-        return taskId;
-    }
+	public Level getLevel() {
+		return level;
+	}
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
+	public void setLevel(Level level) {
+		this.level = level;
+	}
 
-    public Integer getPriority() {
-        return priority;
-    }
+	public String getJobId() {
+		return jobId;
+	}
 
-    public void setPriority(Integer priority) {
-        this.priority = priority;
-    }
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
 
-    public String getSubmitNodeGroup() {
-        return submitNodeGroup;
-    }
+	public String getTaskId() {
+		return taskId;
+	}
 
-    public void setSubmitNodeGroup(String submitNodeGroup) {
-        this.submitNodeGroup = submitNodeGroup;
-    }
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
 
-    public String getTaskTrackerNodeGroup() {
-        return taskTrackerNodeGroup;
-    }
+	public Integer getPriority() {
+		return priority;
+	}
 
-    public void setTaskTrackerNodeGroup(String taskTrackerNodeGroup) {
-        this.taskTrackerNodeGroup = taskTrackerNodeGroup;
-    }
+	public void setPriority(Integer priority) {
+		this.priority = priority;
+	}
 
-    public Map<String, String> getExtParams() {
-        return extParams;
-    }
+	public String getSubmitNodeGroup() {
+		return submitNodeGroup;
+	}
 
-    public void setExtParams(Map<String, String> extParams) {
-        this.extParams = extParams;
-    }
+	public void setSubmitNodeGroup(String submitNodeGroup) {
+		this.submitNodeGroup = submitNodeGroup;
+	}
 
-    public boolean isNeedFeedback() {
-        return needFeedback;
-    }
+	public String getTaskTrackerNodeGroup() {
+		return taskTrackerNodeGroup;
+	}
 
-    public void setNeedFeedback(boolean needFeedback) {
-        this.needFeedback = needFeedback;
-    }
+	public void setTaskTrackerNodeGroup(String taskTrackerNodeGroup) {
+		this.taskTrackerNodeGroup = taskTrackerNodeGroup;
+	}
 
-    public String getCronExpression() {
-        return cronExpression;
-    }
+	public Map<String, String> getExtParams() {
+		return extParams;
+	}
 
-    public void setCronExpression(String cronExpression) {
-        this.cronExpression = cronExpression;
-    }
+	public void setExtParams(Map<String, String> extParams) {
+		this.extParams = extParams;
+	}
 
-    public Long getTriggerTime() {
-        return triggerTime;
-    }
+	public boolean isNeedFeedback() {
+		return needFeedback;
+	}
 
-    public void setTriggerTime(Long triggerTime) {
-        this.triggerTime = triggerTime;
-    }
+	public void setNeedFeedback(boolean needFeedback) {
+		this.needFeedback = needFeedback;
+	}
 
-    public Long getLogTime() {
-        return logTime;
-    }
+	public String getCronExpression() {
+		return cronExpression;
+	}
 
-    public void setLogTime(Long logTime) {
-        this.logTime = logTime;
-    }
+	public void setCronExpression(String cronExpression) {
+		this.cronExpression = cronExpression;
+	}
 
-    public Integer getMaxRetryTimes() {
-        return maxRetryTimes;
-    }
+	public Long getTriggerTime() {
+		return triggerTime;
+	}
 
-    public void setMaxRetryTimes(Integer maxRetryTimes) {
-        this.maxRetryTimes = maxRetryTimes;
-    }
+	public void setTriggerTime(Long triggerTime) {
+		this.triggerTime = triggerTime;
+	}
 
-    public Integer getRepeatCount() {
-        return repeatCount;
-    }
+	public Long getLogTime() {
+		return logTime;
+	}
 
-    public void setRepeatCount(Integer repeatCount) {
-        this.repeatCount = repeatCount;
-    }
+	public void setLogTime(Long logTime) {
+		this.logTime = logTime;
+	}
 
-    public Integer getRepeatedCount() {
-        return repeatedCount;
-    }
+	public Integer getMaxRetryTimes() {
+		return maxRetryTimes;
+	}
 
-    public void setRepeatedCount(Integer repeatedCount) {
-        this.repeatedCount = repeatedCount;
-    }
+	public void setMaxRetryTimes(Integer maxRetryTimes) {
+		this.maxRetryTimes = maxRetryTimes;
+	}
 
-    public Long getRepeatInterval() {
-        return repeatInterval;
-    }
+	public Integer getRepeatCount() {
+		return repeatCount;
+	}
 
-    public void setRepeatInterval(Long repeatInterval) {
-        this.repeatInterval = repeatInterval;
-    }
+	public void setRepeatCount(Integer repeatCount) {
+		this.repeatCount = repeatCount;
+	}
 
-    public String getRealTaskId() {
-        return realTaskId;
-    }
+	public Integer getRepeatedCount() {
+		return repeatedCount;
+	}
 
-    public void setRealTaskId(String realTaskId) {
-        this.realTaskId = realTaskId;
-    }
+	public void setRepeatedCount(Integer repeatedCount) {
+		this.repeatedCount = repeatedCount;
+	}
 
-    public Boolean getDepPreCycle() {
-        return depPreCycle;
-    }
+	public Long getRepeatInterval() {
+		return repeatInterval;
+	}
 
-    public void setDepPreCycle(Boolean depPreCycle) {
-        this.depPreCycle = depPreCycle;
-    }
+	public void setRepeatInterval(Long repeatInterval) {
+		this.repeatInterval = repeatInterval;
+	}
+
+	public String getRealTaskId() {
+		return realTaskId;
+	}
+
+	public void setRealTaskId(String realTaskId) {
+		this.realTaskId = realTaskId;
+	}
+
+	public Boolean getDepPreCycle() {
+		return depPreCycle;
+	}
+
+	public void setDepPreCycle(Boolean depPreCycle) {
+		this.depPreCycle = depPreCycle;
+	}
 }

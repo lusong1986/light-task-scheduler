@@ -22,7 +22,8 @@ public class TxLogReplay<K, V> {
     private StoreTxLogEngine<K, V> storeTxLogEngine;
     private DataBlockEngine<K, V> dataBlockEngine;
     private Index<K, V> index;
-    private DataCache<K, V> dataCache;
+    @SuppressWarnings("unused")
+	private DataCache<K, V> dataCache;
 
     public TxLogReplay(StoreTxLogEngine<K, V> storeTxLogEngine, DataBlockEngine<K, V> dataBlockEngine, Index<K, V> index, DataCache<K, V> dataCache) {
         this.storeTxLogEngine = storeTxLogEngine;

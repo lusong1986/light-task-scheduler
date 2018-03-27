@@ -11,27 +11,27 @@ import com.github.ltsopensource.core.cluster.Config;
  */
 public class StatusCheckHttpCmd implements HttpCmdProc {
 
-    private Config config;
+	private Config config;
 
-    public StatusCheckHttpCmd(Config config) {
-        this.config = config;
-    }
+	public StatusCheckHttpCmd(Config config) {
+		this.config = config;
+	}
 
-    @Override
-    public String nodeIdentity() {
-        return config.getIdentity();
-    }
+	@Override
+	public String nodeIdentity() {
+		return config.getIdentity();
+	}
 
-    @Override
-    public String getCommand() {
-        return HttpCmdNames.HTTP_CMD_STATUS_CHECK;
-    }
+	@Override
+	public String getCommand() {
+		return HttpCmdNames.HTTP_CMD_STATUS_CHECK;
+	}
 
-    @Override
-    public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
-        HttpCmdResponse response = new HttpCmdResponse();
-        response.setSuccess(true);
-        response.setMsg("ok");
-        return response;
-    }
+	@Override
+	public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
+		HttpCmdResponse response = new HttpCmdResponse();
+		response.setSuccess(true);
+		response.setMsg("ok");
+		return response;
+	}
 }

@@ -7,13 +7,13 @@ import java.math.BigDecimal;
  */
 public interface JVMThreadMBean {
 
-    int getDaemonThreadCount();
+	int getDaemonThreadCount();
 
-    int getThreadCount();
+	int getThreadCount();
 
-    long getTotalStartedThreadCount();
+	long getTotalStartedThreadCount();
 
-    int getDeadLockedThreadCount();
+	int getDeadLockedThreadCount();
 
-    BigDecimal getProcessCpuTimeRate();
+	BigDecimal getProcessCpuTimeRate();
 }

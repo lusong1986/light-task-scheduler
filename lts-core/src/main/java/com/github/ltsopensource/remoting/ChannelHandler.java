@@ -5,6 +5,6 @@ package com.github.ltsopensource.remoting;
  */
 public interface ChannelHandler {
 
-    ChannelHandler addListener(ChannelHandlerListener listener);
+	ChannelHandler addListener(ChannelHandlerListener listener);
 
 }

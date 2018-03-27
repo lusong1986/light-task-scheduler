@@ -15,7 +15,8 @@ public class GroovyEngine {
     /**
      * 将groovy源码解析为Class
      */
-    public static Class parseClass(String groovySource) throws GroovyException {
+    @SuppressWarnings({ "rawtypes", "resource" })
+	public static Class parseClass(String groovySource) throws GroovyException {
 
         GroovyClassLoader loader = new GroovyClassLoader();
 

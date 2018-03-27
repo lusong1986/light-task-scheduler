@@ -1,1 +1,42 @@
-<h2>首页还没规划好，可以访问其他页面，也可以提建议(<a href="https://github.com/ltsopensource/light-task-scheduler/issues/233">https://github.com/ltsopensource/light-task-scheduler/issues/233</a> )，首页应该放什么东西，敬请期待......</h2>
+<h2>恒大金服：LTS管理后台 v1.7.0.2</h2>
+</br>
+
+<h3>1.7.0.2更新内容（2017-12-27）</h3>
+<div>
+	<ol>
+		<li>一键启停所有job</li>
+		<li>手工下线、上线tasktracker</li>
+		<li>job的时间轴，图形展示将要执行的所有job列表</li>
+		<li>丰富jobtracker埋点，job的完整trace链展示在cat上</li>
+		<li>监控jobtracker上的主要线程池信息</li>
+		<li>修复父job失败后子job不按时执行、上下线日志频繁更新等bug</li>
+	</ol>
+</div>
+</br>
+
+<h3>1.7.0.1更新内容（2017-08-30）</h3>
+<div>
+	<ol>
+		<li>增加TaskTracker灰度功能</li>	
+		<li>增加Job灰度功能</li>
+		<li>增加Job依赖功能</li>
+		<li>修复部分bug</li>
+	</ol>
+</div>
+</br>
+
+</br>
+<h3>1.7.0更新内容（2017-03-06）</h3>
+<div>
+	<ol>
+		<li>暂停、恢复job</li>
+		<li>指定次数，指定时间间隔的job</li>
+		<li>手工触发一个定时的job</li>
+		<li>单个job可以配置最大重试次数（不超过10次）</li>
+		<li>在执行中任务列表，可以中断一个正在执行的job</li>
+		<li>可以创建不需要依赖上一周期的cronjob、repeatale job</li>
+		<li>tasktracker断网后，自动停掉正在执行的job（默认不开启）</li>
+		<li>更丰富的任务日志查询条件</li>
+	</ol>
+</div>
+</br>

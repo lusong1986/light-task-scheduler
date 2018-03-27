@@ -6,10 +6,10 @@ package com.github.ltsopensource.cmd;
  */
 public interface HttpCmdProc {
 
-    String nodeIdentity();
+	String nodeIdentity();
 
-    String getCommand();
+	String getCommand();
 
-    HttpCmdResponse execute(HttpCmdRequest request) throws Exception;
+	HttpCmdResponse execute(HttpCmdRequest request) throws Exception;
 
 }

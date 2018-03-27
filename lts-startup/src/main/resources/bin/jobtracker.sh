@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # JVMFLAGS JVM参数可以在这里设置
-JVMFLAGS=-Dfile.encoding=UTF-8
+JVMFLAGS="-Dfile.encoding=UTF-8 -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -Xloggc:/home/logs/lts/gc.log -server -Xms4096m -Xmx4096m -XX:PermSize=512M -XX:MaxPermSize=512m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/logs/lts"
 
 JOB_TRACKER_HOME="${BASH_SOURCE-$0}"
 JOB_TRACKER_HOME="$(dirname "${JOB_TRACKER_HOME}")"

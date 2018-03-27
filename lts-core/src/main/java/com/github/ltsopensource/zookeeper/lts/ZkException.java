@@ -7,35 +7,37 @@ import org.apache.zookeeper.KeeperException;
  */
 public class ZkException extends RuntimeException {
 
-    public ZkException() {
-        super();
-    }
+	private static final long serialVersionUID = -9134890455852149341L;
 
-    public ZkException(String message) {
-        super(message);
-    }
+	public ZkException() {
+		super();
+	}
 
-    public ZkException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public ZkException(String message) {
+		super(message);
+	}
 
-    public ZkException(Throwable cause) {
-        super(cause);
-    }
+	public ZkException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    public boolean isZkNoNodeException() {
-        Throwable cause = getCause();
-        if (cause != null && cause instanceof KeeperException) {
-            return KeeperException.Code.NONODE != ((KeeperException) cause).code();
-        }
-        return false;
-    }
+	public ZkException(Throwable cause) {
+		super(cause);
+	}
 
-    public boolean isZkNodeExistsException() {
-        Throwable cause = getCause();
-        if (cause != null && cause instanceof KeeperException) {
-            return KeeperException.Code.NODEEXISTS != ((KeeperException) cause).code();
-        }
-        return false;
-    }
+	public boolean isZkNoNodeException() {
+		Throwable cause = getCause();
+		if (cause != null && cause instanceof KeeperException) {
+			return KeeperException.Code.NONODE != ((KeeperException) cause).code();
+		}
+		return false;
+	}
+
+	public boolean isZkNodeExistsException() {
+		Throwable cause = getCause();
+		if (cause != null && cause instanceof KeeperException) {
+			return KeeperException.Code.NODEEXISTS != ((KeeperException) cause).code();
+		}
+		return false;
+	}
 }

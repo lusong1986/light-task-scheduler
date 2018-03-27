@@ -1,12 +1,15 @@
 package com.github.ltsopensource.queue.mongo;
 
 import com.github.ltsopensource.core.AppContext;
+import com.github.ltsopensource.core.exception.LtsRuntimeException;
 import com.github.ltsopensource.core.support.JobQueueUtils;
 import com.github.ltsopensource.core.support.SystemClock;
 import com.github.ltsopensource.queue.AbstractPreLoader;
+import com.github.ltsopensource.queue.domain.JobGrayPo;
 import com.github.ltsopensource.queue.domain.JobPo;
 import com.github.ltsopensource.store.mongo.DataStoreProvider;
 import com.github.ltsopensource.store.mongo.MongoTemplate;
+
 import org.mongodb.morphia.AdvancedDatastore;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -54,7 +57,8 @@ public class MongoPreLoader extends AbstractPreLoader {
         return updateResult.getUpdatedCount() == 1;
     }
 
-    protected List<JobPo> load(String loadTaskTrackerNodeGroup, int loadSize) {
+    @SuppressWarnings("deprecation")
+	protected List<JobPo> load(String loadTaskTrackerNodeGroup, int loadSize) {
         // load
         String tableName = JobQueueUtils.getExecutableQueueName(loadTaskTrackerNodeGroup);
         Query<JobPo> query = template.createQuery(tableName, JobPo.class);
@@ -63,5 +67,10 @@ public class MongoPreLoader extends AbstractPreLoader {
                 .order(" priority, triggerTime , gmtCreated").offset(0).limit(loadSize);
         return query.asList();
     }
+
+	@Override
+	protected JobGrayPo getGrayPo(String taskId) {
+		throw new LtsRuntimeException("not support mongo");
+	}
 
 }

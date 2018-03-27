@@ -5,7 +5,9 @@ package com.github.ltsopensource.core.exception;
  */
 public class LtsRuntimeException extends RuntimeException {
 
-    public LtsRuntimeException() {
+	private static final long serialVersionUID = -7093026527118696029L;
+
+	public LtsRuntimeException() {
         super();
     }
 

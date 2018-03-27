@@ -1,12 +1,26 @@
 package com.github.ltsopensource.admin.cluster;
 
-import com.github.ltsopensource.admin.access.face.*;
+import com.github.ltsopensource.admin.access.face.BackendJVMGCAccess;
+import com.github.ltsopensource.admin.access.face.BackendJVMMemoryAccess;
+import com.github.ltsopensource.admin.access.face.BackendJVMThreadAccess;
+import com.github.ltsopensource.admin.access.face.BackendJobClientMAccess;
+import com.github.ltsopensource.admin.access.face.BackendJobTrackerMAccess;
+import com.github.ltsopensource.admin.access.face.BackendNodeOnOfflineLogAccess;
+import com.github.ltsopensource.admin.access.face.BackendTaskTrackerMAccess;
 import com.github.ltsopensource.admin.access.memory.NodeMemCacheAccess;
 import com.github.ltsopensource.admin.web.support.NoRelyJobGenerator;
 import com.github.ltsopensource.biz.logger.JobLogger;
 import com.github.ltsopensource.core.AppContext;
 import com.github.ltsopensource.core.cluster.Node;
-import com.github.ltsopensource.queue.*;
+import com.github.ltsopensource.queue.CronJobQueue;
+import com.github.ltsopensource.queue.ExecutableJobDependency;
+import com.github.ltsopensource.queue.ExecutableJobQueue;
+import com.github.ltsopensource.queue.ExecutingJobQueue;
+import com.github.ltsopensource.queue.JobFeedbackQueue;
+import com.github.ltsopensource.queue.JobGrayFlag;
+import com.github.ltsopensource.queue.NodeGroupStore;
+import com.github.ltsopensource.queue.RepeatJobQueue;
+import com.github.ltsopensource.queue.SuspendJobQueue;
 
 /**
  * Robert HG (254963746@qq.com) on 6/5/15.
@@ -21,7 +35,9 @@ public class BackendAppContext extends AppContext {
     private SuspendJobQueue suspendJobQueue;
     private NodeGroupStore nodeGroupStore;
     private JobLogger jobLogger;
-    private Node node;
+    private JobGrayFlag jobGrayFlag;
+    private ExecutableJobDependency executableJobDependency;
+	private Node node;
 
     private BackendJobClientMAccess backendJobClientMAccess;
     private BackendJobTrackerMAccess backendJobTrackerMAccess;
@@ -36,6 +52,22 @@ public class BackendAppContext extends AppContext {
     private NoRelyJobGenerator noRelyJobGenerator;
 
     private BackendRegistrySrv backendRegistrySrv;
+    
+    public ExecutableJobDependency getExecutableJobDependency() {
+		return executableJobDependency;
+	}
+
+	public void setExecutableJobDependency(ExecutableJobDependency executableJobDependency) {
+		this.executableJobDependency = executableJobDependency;
+	}
+    
+	public JobGrayFlag getJobGrayFlag() {
+		return jobGrayFlag;
+	}
+
+	public void setJobGrayFlag(JobGrayFlag jobGrayFlag) {
+		this.jobGrayFlag = jobGrayFlag;
+	}
 
     public Node getNode() {
         return node;

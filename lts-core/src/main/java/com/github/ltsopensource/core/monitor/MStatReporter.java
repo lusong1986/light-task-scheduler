@@ -5,14 +5,14 @@ package com.github.ltsopensource.core.monitor;
  */
 public interface MStatReporter {
 
-    /**
-     * 启动
-     */
-    void start();
+	/**
+	 * 启动
+	 */
+	void start();
 
-    /**
-     * 停止
-     */
-    void stop();
+	/**
+	 * 停止
+	 */
+	void stop();
 
 }

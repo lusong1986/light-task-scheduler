@@ -5,13 +5,13 @@ package com.github.ltsopensource.remoting;
  */
 public interface ChannelFuture {
 
-    boolean isConnected();
+	boolean isConnected();
 
-    Channel getChannel();
+	Channel getChannel();
 
-    boolean awaitUninterruptibly(long timeoutMillis);
+	boolean awaitUninterruptibly(long timeoutMillis);
 
-    boolean isDone();
+	boolean isDone();
 
-    Throwable cause();
+	Throwable cause();
 }

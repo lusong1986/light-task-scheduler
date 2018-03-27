@@ -6,8 +6,8 @@ import com.github.ltsopensource.zookeeper.ZookeeperTransporter;
 
 public class ZkClientZookeeperTransporter implements ZookeeperTransporter {
 
-    public ZkClient connect(Config config) {
-        return new ZkClientZkClient(config);
-    }
+	public ZkClient connect(Config config) {
+		return new ZkClientZkClient(config);
+	}
 
 }

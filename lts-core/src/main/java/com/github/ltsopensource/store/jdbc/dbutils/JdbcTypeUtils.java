@@ -7,18 +7,18 @@ import java.util.Date;
  */
 public class JdbcTypeUtils {
 
-    public static Long toTimestamp(Date date) {
+	public static Long toTimestamp(Date date) {
 
-        if (date == null) {
-            return null;
-        }
-        return date.getTime();
-    }
+		if (date == null) {
+			return null;
+		}
+		return date.getTime();
+	}
 
-    public static Date toDate(Long timestamp){
-        if(timestamp == null){
-            return null;
-        }
-        return new Date(timestamp);
-    }
+	public static Date toDate(Long timestamp) {
+		if (timestamp == null) {
+			return null;
+		}
+		return new Date(timestamp);
+	}
 }

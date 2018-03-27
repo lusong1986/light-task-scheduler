@@ -5,21 +5,21 @@ package com.github.ltsopensource.jvmmonitor.mbean;
  */
 public interface JVMGCMBean {
 
-    long getYoungGCCollectionCount();
+	long getYoungGCCollectionCount();
 
-    long getYoungGCCollectionTime();
+	long getYoungGCCollectionTime();
 
-    long getFullGCCollectionCount();
+	long getFullGCCollectionCount();
 
-    long getFullGCCollectionTime();
+	long getFullGCCollectionTime();
 
-    // 下面的数字是做过差计算的,启动后的第二次开始才能做差值
-    long getSpanYoungGCCollectionCount();
+	// 下面的数字是做过差计算的,启动后的第二次开始才能做差值
+	long getSpanYoungGCCollectionCount();
 
-    long getSpanYoungGCCollectionTime();
+	long getSpanYoungGCCollectionTime();
 
-    long getSpanFullGCCollectionCount();
+	long getSpanFullGCCollectionCount();
 
-    long getSpanFullGCCollectionTime();
+	long getSpanFullGCCollectionTime();
 
 }

@@ -11,6 +11,7 @@ import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.store.mongo.MongoRepository;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+
 import org.mongodb.morphia.query.Query;
 
 import java.util.Date;
@@ -46,7 +47,8 @@ public class MongoJobLogger extends MongoRepository implements JobLogger {
         template.save(jobLogPos);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public PaginationRsp<JobLogPo> search(JobLoggerRequest request) {
 
         Query<JobLogPo> query = template.createQuery(JobLogPo.class);

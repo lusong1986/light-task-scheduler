@@ -8,9 +8,9 @@ import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
  */
 public abstract class AbstractProcessor implements RemotingProcessor {
 
-    protected TaskTrackerAppContext appContext;
+	protected TaskTrackerAppContext appContext;
 
-    protected AbstractProcessor(TaskTrackerAppContext appContext) {
-        this.appContext = appContext;
-    }
+	protected AbstractProcessor(TaskTrackerAppContext appContext) {
+		this.appContext = appContext;
+	}
 }

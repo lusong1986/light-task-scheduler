@@ -5,7 +5,9 @@ package com.github.ltsopensource.kv;
  */
 public class DBException extends RuntimeException {
 
-    public DBException() {
+	private static final long serialVersionUID = -6465006452499167633L;
+
+	public DBException() {
         super();
     }
 

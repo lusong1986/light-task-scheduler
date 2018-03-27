@@ -6,8 +6,8 @@ package com.github.ltsopensource.core.constant;
  */
 public enum Environment {
 
-    UNIT_TEST,  // 单元测试
-    DEV,        // 开发
-    ONLINE      // 线上
+	UNIT_TEST, // 单元测试
+	DEV, // 开发
+	ONLINE // 线上
 
 }

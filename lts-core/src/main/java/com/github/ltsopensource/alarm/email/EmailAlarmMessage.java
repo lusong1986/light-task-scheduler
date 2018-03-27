@@ -7,7 +7,9 @@ import com.github.ltsopensource.alarm.AlarmMessage;
  */
 public class EmailAlarmMessage extends AlarmMessage {
 
-    private String to;
+	private static final long serialVersionUID = 5602143723789688680L;
+
+	private String to;
 
     private String title;
 

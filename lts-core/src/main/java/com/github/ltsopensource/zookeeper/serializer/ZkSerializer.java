@@ -5,7 +5,7 @@ package com.github.ltsopensource.zookeeper.serializer;
  */
 public interface ZkSerializer {
 
-    public byte[] serialize(Object data) throws ZkMarshallingException;
+	public byte[] serialize(Object data) throws ZkMarshallingException;
 
-    public Object deserialize(byte[] bytes) throws ZkMarshallingException;
+	public Object deserialize(byte[] bytes) throws ZkMarshallingException;
 }

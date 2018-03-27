@@ -10,18 +10,18 @@ import com.github.ltsopensource.cmd.HttpCmdResponse;
  */
 public class SysConfigModifyHttpCmd implements HttpCmdProc {
 
-    @Override
-    public String nodeIdentity() {
-        return null;
-    }
+	@Override
+	public String nodeIdentity() {
+		return null;
+	}
 
-    @Override
-    public String getCommand() {
-        return null;
-    }
+	@Override
+	public String getCommand() {
+		return null;
+	}
 
-    @Override
-    public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
-        return null;
-    }
+	@Override
+	public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
+		return null;
+	}
 }

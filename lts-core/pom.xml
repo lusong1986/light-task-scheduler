@@ -5,13 +5,18 @@
     <parent>
         <artifactId>lts-parent</artifactId>
         <groupId>com.github.ltsopensource</groupId>
-        <version>1.7.1-SNAPSHOT</version>
+        <version>1.7.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
     <artifactId>lts-core</artifactId>
 
     <dependencies>
+		<dependency>
+			<groupId>com.dianping.cat</groupId>
+			<artifactId>cat-client</artifactId>
+			<scope>provided</scope>
+		</dependency>    
         <dependency>
             <groupId>org.mongodb.morphia</groupId>
             <artifactId>morphia</artifactId>

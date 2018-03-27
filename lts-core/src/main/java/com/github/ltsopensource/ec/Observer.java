@@ -6,6 +6,6 @@ package com.github.ltsopensource.ec;
  */
 public interface Observer {
 
-    public void onObserved(EventInfo eventInfo);
+	public void onObserved(EventInfo eventInfo);
 
 }

@@ -97,6 +97,8 @@
                         指定
                     </div>
                     <div class="imp secondList">
+                        <input type="checkbox" value="0">
+                        00                    
                         <input type="checkbox" value="1">
                         01
                         <input type="checkbox" value="2">
@@ -115,10 +117,10 @@
                         08
                         <input type="checkbox" value="9">
                         09
-                        <input type="checkbox" value="10">
-                        10
                     </div>
                     <div class="imp secondList">
+                        <input type="checkbox" value="10">
+                        10                    
                         <input type="checkbox" value="11">
                         11
                         <input type="checkbox" value="12">
@@ -137,10 +139,10 @@
                         18
                         <input type="checkbox" value="19">
                         19
-                        <input type="checkbox" value="20">
-                        20
                     </div>
                     <div class="imp secondList">
+                        <input type="checkbox" value="20">
+                        20                    
                         <input type="checkbox" value="21">
                         21
                         <input type="checkbox" value="22">
@@ -159,10 +161,10 @@
                         28
                         <input type="checkbox" value="29">
                         29
-                        <input type="checkbox" value="30">
-                        30
                     </div>
                     <div class="imp secondList">
+                        <input type="checkbox" value="30">
+                        30                    
                         <input type="checkbox" value="31">
                         31
                         <input type="checkbox" value="32">
@@ -181,10 +183,10 @@
                         38
                         <input type="checkbox" value="39">
                         39
-                        <input type="checkbox" value="40">
-                        40
                     </div>
                     <div class="imp secondList">
+                        <input type="checkbox" value="40">
+                        40                    
                         <input type="checkbox" value="41">
                         41
                         <input type="checkbox" value="42">
@@ -203,10 +205,10 @@
                         48
                         <input type="checkbox" value="49">
                         49
-                        <input type="checkbox" value="50">
-                        50
                     </div>
                     <div class="imp secondList">
+                        <input type="checkbox" value="50">
+                        50                    
                         <input type="checkbox" value="51">
                         51
                         <input type="checkbox" value="52">
@@ -257,6 +259,8 @@
                         指定
                     </div>
                     <div class="imp minList">
+                        <input type="checkbox" value="0">
+                        00                    
                         <input type="checkbox" value="1">
                         01
                         <input type="checkbox" value="2">
@@ -275,10 +279,10 @@
                         08
                         <input type="checkbox" value="9">
                         09
-                        <input type="checkbox" value="10">
-                        10
                     </div>
                     <div class="imp minList">
+                        <input type="checkbox" value="10">
+                        10                    
                         <input type="checkbox" value="11">
                         11
                         <input type="checkbox" value="12">
@@ -297,10 +301,10 @@
                         18
                         <input type="checkbox" value="19">
                         19
-                        <input type="checkbox" value="20">
-                        20
                     </div>
                     <div class="imp minList">
+                        <input type="checkbox" value="20">
+                        20                    
                         <input type="checkbox" value="21">
                         21
                         <input type="checkbox" value="22">
@@ -319,10 +323,10 @@
                         28
                         <input type="checkbox" value="29">
                         29
-                        <input type="checkbox" value="30">
-                        30
                     </div>
                     <div class="imp minList">
+                        <input type="checkbox" value="30">
+                        30                    
                         <input type="checkbox" value="31">
                         31
                         <input type="checkbox" value="32">
@@ -341,10 +345,10 @@
                         38
                         <input type="checkbox" value="39">
                         39
-                        <input type="checkbox" value="40">
-                        40
                     </div>
                     <div class="imp minList">
+                        <input type="checkbox" value="40">
+                        40                    
                         <input type="checkbox" value="41">
                         41
                         <input type="checkbox" value="42">
@@ -363,10 +367,10 @@
                         48
                         <input type="checkbox" value="49">
                         49
-                        <input type="checkbox" value="50">
-                        50
                     </div>
                     <div class="imp minList">
+                        <input type="checkbox" value="50">
+                        50                    
                         <input type="checkbox" value="51">
                         51
                         <input type="checkbox" value="52">
@@ -536,7 +540,10 @@
                         9
                         <input type="checkbox" value="10">
                         10
-                        <input type="checkbox" value="11">
+                    </div>
+                    
+            		<div class="imp dayList">
+            		    <input type="checkbox" value="11">
                         11
                         <input type="checkbox" value="12">
                         12
@@ -548,8 +555,6 @@
                         15
                         <input type="checkbox" value="16">
                         16
-                    </div>
-                    <div class="imp dayList">
                         <input type="checkbox" value="17">
                         17
                         <input type="checkbox" value="18">
@@ -557,7 +562,10 @@
                         <input type="checkbox" value="19">
                         19
                         <input type="checkbox" value="20">
-                        20
+                        20                        
+            		</div>            
+                    
+                    <div class="imp dayList">
                         <input type="checkbox" value="21">
                         21
                         <input type="checkbox" value="22">
@@ -606,7 +614,7 @@
                         从
                         <input class="numberspinner" style="width: 60px;" data-options="min:1,max:12"
                                value="1" id="mouthStart_1">
-                        日开始,每
+                        月开始,每
                         <input class="numberspinner" style="width: 60px;" data-options="min:1,max:12"
                                value="1" id="mouthEnd_1">
                         月执行一次

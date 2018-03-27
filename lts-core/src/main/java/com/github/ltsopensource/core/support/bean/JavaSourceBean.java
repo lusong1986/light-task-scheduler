@@ -8,46 +8,46 @@ import java.util.Set;
  */
 public class JavaSourceBean {
 
-    private String packageName;
+	private String packageName;
 
-    private Set<String> importNameList = new HashSet<String>();
+	private Set<String> importNameList = new HashSet<String>();
 
-    private String classDefinition;
+	private String classDefinition;
 
-    private Set<String> methodCodeList = new HashSet<String>();
+	private Set<String> methodCodeList = new HashSet<String>();
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
-    }
+	public void setPackageName(String packageName) {
+		this.packageName = packageName;
+	}
 
-    public void setClassDefinition(String classDefinition) {
-        this.classDefinition = classDefinition;
-    }
+	public void setClassDefinition(String classDefinition) {
+		this.classDefinition = classDefinition;
+	}
 
-    public void addImport(String importName){
-        importNameList.add(importName);
-    }
+	public void addImport(String importName) {
+		importNameList.add(importName);
+	}
 
-    public void addMethod(String methodCode){
-        methodCodeList.add(methodCode);
-    }
+	public void addMethod(String methodCode) {
+		methodCodeList.add(methodCode);
+	}
 
-    public String toString(){
-        StringBuilder code = new StringBuilder();
-        code.append("package ").append(packageName).append(";\n");
+	public String toString() {
+		StringBuilder code = new StringBuilder();
+		code.append("package ").append(packageName).append(";\n");
 
-        for (String importName : importNameList) {
-            code.append("import ").append(importName).append(";\n");
-        }
+		for (String importName : importNameList) {
+			code.append("import ").append(importName).append(";\n");
+		}
 
-        code.append(classDefinition).append(" {\n");
+		code.append(classDefinition).append(" {\n");
 
-        for (String methodCode : methodCodeList) {
-            code.append(methodCode);
-        }
+		for (String methodCode : methodCodeList) {
+			code.append(methodCode);
+		}
 
-        code.append("}");
+		code.append("}");
 
-        return code.toString();
-    }
+		return code.toString();
+	}
 }

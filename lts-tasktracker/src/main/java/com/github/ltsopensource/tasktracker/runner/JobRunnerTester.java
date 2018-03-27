@@ -13,27 +13,31 @@ import com.github.ltsopensource.tasktracker.logger.BizLoggerFactory;
  */
 public abstract class JobRunnerTester {
 
-    public Result run(JobContext jobContext) throws Throwable {
-        // 1. 设置LTS环境为 UNIT_TEST
-        LTSConfig.setEnvironment(Environment.UNIT_TEST);
-        // 设置 BizLogger
-        LtsLoggerFactory.setLogger(BizLoggerFactory.getLogger(Level.INFO, null, null));
-        // 2. load context (Spring Context 或者其他的)
-        initContext();
-        // 3. new jobRunner
-        JobRunner jobRunner = newJobRunner();
-        // 4. run job
-        return jobRunner.run(jobContext);
-    }
+	public Result run(JobContext jobContext) throws Throwable {
+		// 1. 设置LTS环境为 UNIT_TEST
+		LTSConfig.setEnvironment(Environment.UNIT_TEST);
+		// 设置 BizLogger
+		LtsLoggerFactory.setLogger(BizLoggerFactory.getLogger(Level.INFO, null, null));
+		
+		//bizlogger设置进jobContext
+		jobContext.setBizLogger(LtsLoggerFactory.getBizLogger());
+		
+		// 2. load context (Spring Context 或者其他的)
+		initContext();
+		// 3. new jobRunner
+		JobRunner jobRunner = newJobRunner();
+		// 4. run job
+		return jobRunner.run(jobContext);
+	}
 
-    /**
-     * 初始化上下文 (Spring Context等),准备运行环境
-     */
-    protected abstract void initContext();
+	/**
+	 * 初始化上下文 (Spring Context等),准备运行环境
+	 */
+	protected abstract void initContext();
 
-    /**
-     * 创建JobRunner
-     */
-    protected abstract JobRunner newJobRunner();
+	/**
+	 * 创建JobRunner
+	 */
+	protected abstract JobRunner newJobRunner();
 
 }

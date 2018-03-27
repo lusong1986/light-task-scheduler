@@ -26,8 +26,8 @@ public class JavaBeanDeserializer implements Deserializer {
         this.clazz = clazz;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes", "ConstantConditions"})
-    public <T> T deserialize(Object object, Type type) {
+    @SuppressWarnings("unchecked")
+	public <T> T deserialize(Object object, Type type) {
 
         if (object.getClass() == type) {
             return (T) object;

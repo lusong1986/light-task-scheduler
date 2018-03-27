@@ -39,7 +39,8 @@ public class DataBlockEngine<K, V> {
     private File dataPath;
     private StoreConfig storeConfig;
     private ReentrantLock lock = new ReentrantLock();
-    private DataCompactor dataCompactor;
+    @SuppressWarnings({ "rawtypes", "unused" })
+	private DataCompactor dataCompactor;
 
     public DataBlockEngine(StoreSerializer serializer, StoreConfig storeConfig) {
         this.serializer = serializer;

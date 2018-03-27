@@ -8,17 +8,17 @@ import com.github.ltsopensource.tasktracker.logger.BizLogger;
  */
 public final class LtsLoggerFactory {
 
-    private static final ThreadLocal<BizLogger> THREAD_LOCAL = new ThreadLocal<BizLogger>();
+	private static final ThreadLocal<BizLogger> THREAD_LOCAL = new ThreadLocal<BizLogger>();
 
-    public static BizLogger getBizLogger() {
-        return THREAD_LOCAL.get();
-    }
+	public static BizLogger getBizLogger() {
+		return THREAD_LOCAL.get();
+	}
 
-    protected static void setLogger(BizLogger logger){
-        THREAD_LOCAL.set(logger);
-    }
+	protected static void setLogger(BizLogger logger) {
+		THREAD_LOCAL.set(logger);
+	}
 
-    protected static void remove(){
-        THREAD_LOCAL.remove();
-    }
+	protected static void remove() {
+		THREAD_LOCAL.remove();
+	}
 }

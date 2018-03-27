@@ -21,7 +21,8 @@ public class EnumResolver extends AbstractResolver {
                 return key.equals(name);
             }
 
-            @Override
+            @SuppressWarnings("rawtypes")
+			@Override
             public boolean call(String name, String key, String value) {
                 Object v = Enum.valueOf((Class<Enum>) propertyType, value);
                 writeProperty(context, descriptor, v);

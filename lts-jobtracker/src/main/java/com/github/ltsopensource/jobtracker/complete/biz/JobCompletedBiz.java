@@ -8,9 +8,9 @@ import com.github.ltsopensource.remoting.protocol.RemotingCommand;
  */
 public interface JobCompletedBiz {
 
-    /**
-     * 如果返回空表示继续执行
-     */
-    RemotingCommand doBiz(JobCompletedRequest request);
+	/**
+	 * 如果返回空表示继续执行
+	 */
+	RemotingCommand doBiz(JobCompletedRequest request);
 
 }

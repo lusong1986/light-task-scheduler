@@ -15,15 +15,21 @@
  */
 package com.github.ltsopensource.core.compiler;
 
-import com.github.ltsopensource.core.commons.utils.ClassHelper;
-import javassist.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtField;
+import javassist.CtNewConstructor;
+import javassist.CtNewMethod;
+import javassist.LoaderClassPath;
+
+import com.github.ltsopensource.core.commons.utils.ClassHelper;
 
 /**
  * @author william.liangf

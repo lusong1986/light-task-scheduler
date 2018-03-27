@@ -1,6 +1,11 @@
 package com.github.ltsopensource.tasktracker.logger;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.dianping.cat.message.Transaction;
 import com.github.ltsopensource.core.commons.utils.Callable;
+import com.github.ltsopensource.core.commons.utils.CatUtils;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
 import com.github.ltsopensource.core.commons.utils.StringUtils;
 import com.github.ltsopensource.core.constant.ExtConfig;
@@ -24,152 +29,162 @@ import com.github.ltsopensource.remoting.ResponseFuture;
 import com.github.ltsopensource.remoting.protocol.RemotingCommand;
 import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
- * 业务日志记录器实现
- * 1. 业务日志会发送给JobTracker
- * 2. 也会采取Fail And Store 的方式
+ * 业务日志记录器实现 1. 业务日志会发送给JobTracker 2. 也会采取Fail And Store 的方式
  *
  * @author Robert HG (254963746@qq.com) on 3/27/15.
  */
 public class BizLoggerImpl extends BizLoggerAdapter implements BizLogger {
 
-    private static final Logger logger = LoggerFactory.getLogger(BizLoggerImpl.class);
-    private Level level;
-    private RemotingClientDelegate remotingClient;
-    private TaskTrackerAppContext appContext;
-    private RetryScheduler<BizLog> retryScheduler;
+	private static final Logger logger = LoggerFactory.getLogger(BizLoggerImpl.class);
+	private Level level;
+	private RemotingClientDelegate remotingClient;
+	private TaskTrackerAppContext appContext;
+	private RetryScheduler<BizLog> retryScheduler;
 
-    public BizLoggerImpl(Level level, final RemotingClientDelegate remotingClient, TaskTrackerAppContext appContext) {
-        this.level = level;
-        if (this.level == null) {
-            this.level = Level.INFO;
-        }
-        this.appContext = appContext;
-        this.remotingClient = remotingClient;
+	public BizLoggerImpl(Level level, final RemotingClientDelegate remotingClient, TaskTrackerAppContext appContext) {
+		this.level = level;
+		if (this.level == null) {
+			this.level = Level.INFO;
+		}
+		this.appContext = appContext;
+		this.remotingClient = remotingClient;
 
-        if (isEnableBizLoggerFailStore()) {
+		if (isEnableBizLoggerFailStore()) {
+			this.retryScheduler = new RetryScheduler<BizLog>(BizLogger.class.getSimpleName(), appContext,
+					FailStorePathBuilder.getBizLoggerPath(appContext)) {
+				@Override
+				protected boolean isRemotingEnable() {
+					return remotingClient.isServerEnable();
+				}
 
-            this.retryScheduler = new RetryScheduler<BizLog>(BizLogger.class.getSimpleName(), appContext, FailStorePathBuilder.getBizLoggerPath(appContext)) {
-                @Override
-                protected boolean isRemotingEnable() {
-                    return remotingClient.isServerEnable();
-                }
+				@Override
+				protected boolean retry(List<BizLog> list) {
+					return sendBizLog(list);
+				}
+			};
 
-                @Override
-                protected boolean retry(List<BizLog> list) {
-                    return sendBizLog(list);
-                }
-            };
+			this.retryScheduler.start();
 
-            this.retryScheduler.start();
+			NodeShutdownHook.registerHook(appContext, this.getClass().getName(), new Callable() {
+				@Override
+				public void call() throws Exception {
+					retryScheduler.stop();
+				}
+			});
+		}
 
-            NodeShutdownHook.registerHook(appContext, this.getClass().getName(), new Callable() {
-                @Override
-                public void call() throws Exception {
-                    retryScheduler.stop();
-                }
-            });
-        }
+	}
 
-    }
+	@Override
+	public void debug(String msg) {
+		if (level.ordinal() <= Level.DEBUG.ordinal()) {
+			sendMsg(msg, Level.DEBUG);
+		}
+	}
 
-    @Override
-    public void debug(String msg) {
-        if (level.ordinal() <= Level.DEBUG.ordinal()) {
-            sendMsg(msg, Level.DEBUG);
-        }
-    }
+	@Override
+	public void info(String msg) {
+		if (level.ordinal() <= Level.INFO.ordinal()) {
+			sendMsg(msg, Level.INFO);
+		}
+	}
 
-    @Override
-    public void info(String msg) {
-        if (level.ordinal() <= Level.INFO.ordinal()) {
-            sendMsg(msg, Level.INFO);
-        }
-    }
+	@Override
+	public void error(String msg) {
+		if (level.ordinal() <= Level.ERROR.ordinal()) {
+			sendMsg(msg, Level.ERROR);
+		}
+	}
 
-    @Override
-    public void error(String msg) {
-        if (level.ordinal() <= Level.ERROR.ordinal()) {
-            sendMsg(msg, Level.ERROR);
-        }
-    }
+	private void sendMsg(String msg, Level level) {
+		BizLogSendRequest requestBody = CommandBodyWrapper.wrapper(appContext, new BizLogSendRequest());
 
-    private void sendMsg(String msg, Level level) {
+		final BizLog bizLog = new BizLog();
+		bizLog.setTaskTrackerIdentity(requestBody.getIdentity());
+		bizLog.setTaskTrackerNodeGroup(requestBody.getNodeGroup());
+		bizLog.setLogTime(SystemClock.now());
+		JobMeta jobMeta = getJobMeta();
+		bizLog.setJobId(jobMeta.getJobId());
+		bizLog.setTaskId(jobMeta.getJob().getTaskId());
+		bizLog.setRealTaskId(jobMeta.getRealTaskId());
+		bizLog.setJobType(jobMeta.getJobType());
+		bizLog.setMsg(msg);
+		bizLog.setLevel(level);
+		requestBody.setBizLogs(Collections.singletonList(bizLog));
 
-        BizLogSendRequest requestBody = CommandBodyWrapper.wrapper(appContext, new BizLogSendRequest());
+		if (!remotingClient.isServerEnable()) {
+			CatUtils.recordEvent(false, bizLog.getTaskId(), "BIZLOG_JOBTRACKER_NOTENABLE");
+			if (isEnableBizLoggerFailStore()) {
+				retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
+				CatUtils.recordEvent(true, bizLog.getTaskId(), "BIZLOG_STORE_FAILESTORE");
+			} else {
+				logger.warn("Send Biz Logger to JobTracker Error, server is down, bizLog={}", JSON.toJSONString(bizLog));
+			}
+			return;
+		}
 
-        final BizLog bizLog = new BizLog();
-        bizLog.setTaskTrackerIdentity(requestBody.getIdentity());
-        bizLog.setTaskTrackerNodeGroup(requestBody.getNodeGroup());
-        bizLog.setLogTime(SystemClock.now());
-        JobMeta jobMeta = getJobMeta();
-        bizLog.setJobId(jobMeta.getJobId());
-        bizLog.setTaskId(jobMeta.getJob().getTaskId());
-        bizLog.setRealTaskId(jobMeta.getRealTaskId());
-        bizLog.setJobType(jobMeta.getJobType());
-        bizLog.setMsg(msg);
-        bizLog.setLevel(level);
+		RemotingCommand request = RemotingCommand.createRequestCommand(JobProtos.RequestCode.BIZ_LOG_SEND.code(),
+				requestBody);
+		try {
+			// 有可能down机，日志丢失
+			remotingClient.invokeAsync(request, new AsyncCallback() {
+				@Override
+				public void operationComplete(ResponseFuture responseFuture) {
+					RemotingCommand response = responseFuture.getResponseCommand();
+					if (response != null && response.getCode() == JobProtos.ResponseCode.BIZ_LOG_SEND_SUCCESS.code()) {
+						CatUtils.recordEvent(true, bizLog.getTaskId(), "BIZ_LOG_SEND_SUCCESS");
+					} else {
+						if (!isEnableBizLoggerFailStore()) {
+							logger.warn("Send Biz Logger to JobTracker Error, code={}, bizLog={}",
+									response != null ? response.getCode() : null, JSON.toJSONString(bizLog));
+							CatUtils.recordEvent(true, bizLog.getTaskId(), "BIZLOG_STORE_FAILESTORE_NOTENABLE");
+						} else {
+							CatUtils.recordEvent(true, bizLog.getTaskId(), "BIZLOG_STORE_FAILESTORE");
+							retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
+						}
+					}
+				}
+			});
+		} catch (JobTrackerNotFoundException e) {
+			CatUtils.recordEvent(false, bizLog.getTaskId(), "BIZLOG_JOBTRACKER_NOTFOUND");
+			retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
+		}
+	}
 
-        requestBody.setBizLogs(Collections.singletonList(bizLog));
+	private boolean isEnableBizLoggerFailStore() {
+		return !appContext.getConfig().getParameter(ExtConfig.TASK_TRACKER_BIZ_LOGGER_FAIL_STORE_CLOSE, false);
+	}
 
-        if (!remotingClient.isServerEnable()) {
-            if(isEnableBizLoggerFailStore()){
-                retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
-            }else{
-                logger.error("Send Biz Logger to JobTracker Error, server is down, bizLog={}", JSON.toJSONString(bizLog));
-            }
-            return;
-        }
+	private boolean sendBizLog(List<BizLog> bizLogs) {
+		if (CollectionUtils.isEmpty(bizLogs)) {
+			return true;
+		}
 
-        RemotingCommand request = RemotingCommand.createRequestCommand(JobProtos.RequestCode.BIZ_LOG_SEND.code(), requestBody);
-        try {
-            // 有可能down机，日志丢失
-            remotingClient.invokeAsync(request, new AsyncCallback() {
-                @Override
-                public void operationComplete(ResponseFuture responseFuture) {
-                    RemotingCommand response = responseFuture.getResponseCommand();
+		BizLogSendRequest requestBody = CommandBodyWrapper.wrapper(appContext, new BizLogSendRequest());
+		requestBody.setBizLogs(bizLogs);
 
-                    if (response != null && response.getCode() == JobProtos.ResponseCode.BIZ_LOG_SEND_SUCCESS.code()) {
-                        // success
-                    } else {
-                        if (!isEnableBizLoggerFailStore()) {
-                            logger.error("Send Biz Logger to JobTracker Error, code={}, bizLog={}",
-                                    response != null ? response.getCode() : null, JSON.toJSONString(bizLog));
-                        } else {
-                            retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
-                        }
-                    }
-                }
-            });
-        } catch (JobTrackerNotFoundException e) {
-            retryScheduler.inSchedule(StringUtils.generateUUID(), bizLog);
-        }
-    }
+		final String taskId = bizLogs.get(0).getRealTaskId();
+		final Transaction transaction = CatUtils.catTransaction("RETRY_" + JobProtos.RequestCode.BIZ_LOG_SEND.name(),
+				taskId);
 
-    private boolean isEnableBizLoggerFailStore() {
-        return !appContext.getConfig().getParameter(ExtConfig.TASK_TRACKER_BIZ_LOGGER_FAIL_STORE_CLOSE, false);
-    }
+		try {
+			RemotingCommand request = RemotingCommand.createRequestCommand(JobProtos.RequestCode.BIZ_LOG_SEND.code(),
+					requestBody);
+			try {
+				RemotingCommand response = remotingClient.invokeSync(request);
+				if (response != null && response.getCode() == JobProtos.ResponseCode.BIZ_LOG_SEND_SUCCESS.code()) {
+					CatUtils.catSuccess(transaction);
+					return true;
+				}
+			} catch (JobTrackerNotFoundException ignored) {
+				CatUtils.catException(transaction, ignored);
+			}
+		} finally {
+			CatUtils.catComplete(transaction);
+		}
 
-    private boolean sendBizLog(List<BizLog> bizLogs) {
-        if (CollectionUtils.isEmpty(bizLogs)) {
-            return true;
-        }
-        BizLogSendRequest requestBody = CommandBodyWrapper.wrapper(appContext, new BizLogSendRequest());
-        requestBody.setBizLogs(bizLogs);
-
-        RemotingCommand request = RemotingCommand.createRequestCommand(JobProtos.RequestCode.BIZ_LOG_SEND.code(), requestBody);
-        try {
-            RemotingCommand response = remotingClient.invokeSync(request);
-            if (response != null && response.getCode() == JobProtos.ResponseCode.BIZ_LOG_SEND_SUCCESS.code()) {
-                // success
-                return true;
-            }
-        } catch (JobTrackerNotFoundException ignored) {
-        }
-        return false;
-    }
+		return false;
+	}
 
 }

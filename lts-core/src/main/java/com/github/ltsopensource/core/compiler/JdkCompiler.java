@@ -1,17 +1,37 @@
 package com.github.ltsopensource.core.compiler;
 
-import com.github.ltsopensource.core.commons.utils.ClassHelper;
-import com.github.ltsopensource.core.logger.LoggerFactory;
-
-import javax.tools.*;
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.tools.DiagnosticCollector;
+import javax.tools.FileObject;
+import javax.tools.ForwardingJavaFileManager;
+import javax.tools.JavaCompiler;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.SimpleJavaFileObject;
+import javax.tools.StandardJavaFileManager;
+import javax.tools.StandardLocation;
+import javax.tools.ToolProvider;
+
+import com.github.ltsopensource.core.commons.utils.ClassHelper;
 
 public class JdkCompiler extends AbstractCompiler {
 
@@ -28,7 +48,8 @@ public class JdkCompiler extends AbstractCompiler {
 
     private volatile List<String> options;
 
-    public JdkCompiler() {
+    @SuppressWarnings("resource")
+	public JdkCompiler() {
         if (compiler == null) {
             throw new IllegalStateException(
                     "Cannot find the system Java compiler. "

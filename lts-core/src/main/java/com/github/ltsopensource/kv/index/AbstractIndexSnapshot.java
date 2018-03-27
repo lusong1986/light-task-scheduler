@@ -19,7 +19,8 @@ public abstract class AbstractIndexSnapshot<K, V> implements IndexSnapshot<K, V>
 
     protected static final Logger LOGGER = DB.LOGGER;
     private ScheduledExecutorService executorService;
-    private ScheduledFuture<?> future;
+    @SuppressWarnings("unused")
+	private ScheduledFuture<?> future;
     protected Index<K, V> index;
     protected StoreSerializer serializer;
     protected StoreConfig storeConfig;

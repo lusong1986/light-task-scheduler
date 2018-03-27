@@ -12,6 +12,7 @@ import java.util.TimeZone;
 /**
  * from commons-lang 为了性能
  */
+@SuppressWarnings("serial")
 public class FastDateFormat extends Format {
 
     private static final FormatCache<FastDateFormat> cache = new FormatCache<FastDateFormat>() {

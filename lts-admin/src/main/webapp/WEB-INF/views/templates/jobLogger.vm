@@ -135,6 +135,7 @@
             <th data-hide="all">依赖上一周期</th>
             <th data-hide="all">重试次数</th>
             <th data-hide="all">优先级</th>
+            <th data-hide="all">灰度</th>
             <th data-hide="all">执行时间</th>
             <th>Cron表达式</th>
             <th data-hide="all">反馈客户端</th>
@@ -158,6 +159,7 @@
             <td>{{row.depPreCycle | format:'formatRelyOnPrevCycle',row}}</td>
             <td>{{row.retryTimes | format:'formatRetryTimes', row}}</td>
             <td>{{row.priority}}</td>
+            <td>{{row.gray}}</td>
             <td>{{row.triggerTime | dateFormat:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>{{row.cronExpression}}</td>
             <td>{{row.needFeedback | format:'needFeedbackLabel'}}</td>
@@ -212,7 +214,7 @@
             return v ? LOG_TYPE[v] : v;
         }
         LTS.colFormatter.successLabel = function (v) {
-            return v ? "成功" : "失败";
+            return v ? "<span style='color:green'><b>成功</b></span>" : "<span style='color:red'>失败</span>";
         }
 
         var ltsTable = $("#ltstableContainer").ltsTable({
@@ -286,7 +288,7 @@
         var realTaskId = $("input[name='realTaskId']").val();
         if (realTaskId) {
             // 如果是按ID查询，要把时间设置长一点
-            var startLongTime = DateUtil.formatYMDHMD(DateUtil.getDate(new Date(), -10));
+            var startLongTime = DateUtil.formatYMDHMD(DateUtil.getDate(new Date(), -3));
             $("input[name='startLogTime']").val(startLongTime);
             $("#searchBtn").trigger("click");
         } else {

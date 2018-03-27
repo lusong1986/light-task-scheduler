@@ -14,6 +14,7 @@ import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
+
 import org.mongodb.morphia.query.Query;
 
 import java.util.List;
@@ -63,7 +64,8 @@ public class MongoNodeGroupStore extends MongoRepository implements NodeGroupSto
         return query.asList();
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public PaginationRsp<NodeGroupPo> getNodeGroup(NodeGroupGetReq request) {
         Query<NodeGroupPo> query = template.createQuery(NodeGroupPo.class);
         if (request.getNodeType() != null) {

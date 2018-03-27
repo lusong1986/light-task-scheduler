@@ -51,7 +51,8 @@ public class LtsCodecFactory {
         }
     }
 
-    public class NioDecoder extends FrameDecoder {
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+	public class NioDecoder extends FrameDecoder {
         @Override
         protected Object decode(NioChannel ch, byte[] frame) throws Exception {
             ByteBuffer byteBuffer = ByteBuffer.wrap(frame);

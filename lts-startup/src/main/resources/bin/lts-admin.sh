@@ -43,7 +43,7 @@ start)
          exit 0
       fi
     fi
-    nohup "$JAVA" -cp "$CLASSPATH" $JVMFLAGS $LTS_MAIN "$CONF_HOME" > "$_LTS_DAEMON_OUT" 2>&1 < /dev/null &
+    nohup "$JAVA" -Djava.io.tmpdir=/home/work/tmp -cp "$CLASSPATH" $JVMFLAGS $LTS_MAIN "$CONF_HOME" > "$_LTS_DAEMON_OUT" 2>&1 < /dev/null &
 
 	if [ $? -eq 0 ]
     then

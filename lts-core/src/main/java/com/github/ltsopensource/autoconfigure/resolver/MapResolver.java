@@ -21,7 +21,7 @@ public class MapResolver extends AbstractResolver {
 
     public static final MapResolver INSTANCE = new MapResolver();
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public void resolve(AutoConfigContext context, PropertyDescriptor descriptor, Class<?> propertyType) {
 
         Method readMethod = descriptor.getReadMethod();
@@ -64,7 +64,7 @@ public class MapResolver extends AbstractResolver {
         writeProperty(context, descriptor, map);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     protected Map createMap(Type type) {
         if (type == Properties.class) {
             return new Properties();

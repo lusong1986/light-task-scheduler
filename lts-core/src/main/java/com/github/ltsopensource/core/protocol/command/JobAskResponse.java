@@ -9,15 +9,15 @@ public class JobAskResponse extends AbstractRemotingCommandBody {
 
 	private static final long serialVersionUID = 6614340681500484560L;
 	/**
-     * 返回不在执行中的jobIds(死掉的)
-     */
-    List<String> jobIds;
+	 * 返回不在执行中的jobIds(死掉的)
+	 */
+	List<String> jobIds;
 
-    public List<String> getJobIds() {
-        return jobIds;
-    }
+	public List<String> getJobIds() {
+		return jobIds;
+	}
 
-    public void setJobIds(List<String> jobIds) {
-        this.jobIds = jobIds;
-    }
+	public void setJobIds(List<String> jobIds) {
+		this.jobIds = jobIds;
+	}
 }

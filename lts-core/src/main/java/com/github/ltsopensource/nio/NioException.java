@@ -5,7 +5,9 @@ package com.github.ltsopensource.nio;
  */
 public class NioException extends RuntimeException {
 
-    public NioException() {
+	private static final long serialVersionUID = -649908426562923649L;
+
+	public NioException() {
         super();
     }
 

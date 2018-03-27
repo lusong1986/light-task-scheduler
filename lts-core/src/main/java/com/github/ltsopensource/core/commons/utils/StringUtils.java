@@ -15,6 +15,8 @@ public final class StringUtils {
 
     private StringUtils() {
     }
+    
+    public static final String EMPTY = "";
 
     private static final Pattern INT_PATTERN = Pattern.compile("^\\d+$");
 

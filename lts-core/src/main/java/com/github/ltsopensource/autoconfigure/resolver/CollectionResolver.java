@@ -1,15 +1,21 @@
 package com.github.ltsopensource.autoconfigure.resolver;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.AbstractCollection;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.TreeSet;
+
 import com.github.ltsopensource.autoconfigure.AutoConfigContext;
 import com.github.ltsopensource.autoconfigure.PropertiesConfigurationResolveException;
 import com.github.ltsopensource.core.commons.utils.GenericsUtils;
 import com.github.ltsopensource.core.commons.utils.PrimitiveTypeUtils;
 import com.github.ltsopensource.core.json.JSON;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.*;
 
 /**
  * @author Robert HG (254963746@qq.com) on 4/20/16.
@@ -18,7 +24,8 @@ import java.util.*;
 public class CollectionResolver extends AbstractResolver {
     public static final CollectionResolver INSTANCE = new CollectionResolver();
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void resolve(AutoConfigContext context, PropertyDescriptor descriptor, Class<?> propertyType) {
 
         final Collection collection = createCollection(propertyType);
@@ -51,7 +58,8 @@ public class CollectionResolver extends AbstractResolver {
 
     }
 
-    private Collection createCollection(Type type) {
+    @SuppressWarnings("rawtypes")
+	private Collection createCollection(Type type) {
         Class<?> rawClass = getRawClass(type);
 
         Collection list;

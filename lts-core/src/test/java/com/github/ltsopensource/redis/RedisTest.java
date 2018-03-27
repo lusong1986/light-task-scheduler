@@ -1,12 +1,12 @@
 package com.github.ltsopensource.redis;
 
-import org.junit.Before;
-import org.junit.Test;
-import redis.clients.jedis.Jedis;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Before;
+
+import redis.clients.jedis.Jedis;
 
 /**
  * @author Robert HG (254963746@qq.com) on 9/9/15.
@@ -21,7 +21,6 @@ public class RedisTest {
         // jedis.auth("helloworld");  //开启密码验证（配置文件中为 requirepass helloworld）的时候需要执行该方法
     }
 
-    @Test
     public void stringTest() {
         jedis.set("hello", "hello");
         System.out.println(jedis.get("hello"));
@@ -55,7 +54,6 @@ public class RedisTest {
         System.out.println(jedis.exists("b"));
     }
 
-    @Test
     public void testHash() {
 // 清空数据
         System.out.println(jedis.flushDB());

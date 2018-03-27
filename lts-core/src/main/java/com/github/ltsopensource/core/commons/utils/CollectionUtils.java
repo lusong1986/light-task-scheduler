@@ -31,7 +31,8 @@ public class CollectionUtils {
         return map;
     }
 
-    public static <T> Set<T> createHashSet(T... arr) {
+    @SuppressWarnings("unchecked")
+	public static <T> Set<T> createHashSet(T... arr) {
         int size = arr == null ? 0 : arr.length;
         Set<T> set = new HashSet<T>(size);
         if (arr != null && arr.length > 0) {

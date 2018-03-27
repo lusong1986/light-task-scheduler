@@ -7,6 +7,7 @@ import java.io.Serializable;
  *
  * @author Robert HG (254963746@qq.com) on 12/16/15.
  */
+@SuppressWarnings("serial")
 public class StoreTxLogPosition implements Serializable {
 
     // 写的记录id  = 文件的第一条记录ID + 写的位置

@@ -115,7 +115,10 @@
             <th data-hide="phone,tablet">节点创建时间</th>
             <th>机器</th>
             <th>工作线程数</th>
-            <th data-hide="phone,tablet">状态</th>
+            <th data-hide="phone,tablet">状态</th>            
+            <th data-hide="all">可用线程数</th>
+            <th data-hide="all">TaskTracker状态</th>
+            <th data-hide="all">灰度</th>
             <th data-hide="all">CMD端口</th>
             <th>操作</th>
         </tr>
@@ -126,11 +129,14 @@
             <td>{{row.identity}}</td>
             <td>{{row.clusterName}}</td>
             <td>{{row.nodeType}}</td>
-            <td>{{row.group | format:'formatGroup',row}}</td>
+            <td>{{row.group}}</td>
             <td>{{row.createTime | dateFormat:'yyyy-MM-dd HH:mm:ss'}}</td>
             <td>{{row.ip | format:'ipLabel',row}}</td>
-            <td>{{row.threads | format:'threadLabel',row}}</td>
+            <td>{{row.threads}}</td>
             <td>{{row.available | format:'availableLabel'}}</td>
+            <td>{{row.availableThread}}</td>
+            <td>{{row.running | format:'runningLabel', row}}</td>
+            <td>{{row.gray}}</td>
             <td>{{row.httpCmdPort }}</td>
             <td>{{row.opt | format:'optFormat',row}}</td>
         </tr>
@@ -170,12 +176,28 @@
     </div>
 </div>
 
+<div class="modal inmodal" id="threadpoolInfo-modal" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" style="width: 800px;">
+        <div class="modal-content animated rubberBand">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">关闭</span></button>
+                <h2 class="modal-title">JobTracker线程池信息</h2>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="threadpoolInfo">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 
     var KYE_LABEL_MAP = {
         HostName: "主机名",
         LocalIp: "主机IP",
-        PID: " 进程PID",
+        PID: "进程PID",
         StartTime: "启动时间",
         InputArguments: "启动参数",
         Arch: "硬件平台",
@@ -193,6 +215,25 @@
         UnloadedClassCount: "卸载的类总数",
         TotalCompilationTime: "总共编译时间"
     };
+    
+    var THREAD_KYE_LABEL_MAP = {
+        asyncActiveCount: "异步线程池ActiveCount",
+        asyncCorePoolSize: "异步线程池CorePoolSize",
+        asyncMaximumPoolSize: "异步线程池MaximumPoolSize",
+        asyncQueueSize: "异步线程池QueueSize",
+        syncActiveCount: "同步线程池ActiveCount",
+        syncCorePoolSize: "同步线程池CorePoolSize",
+        syncMaximumPoolSize: "同步线程池MaximumPoolSize",
+        syncQueueSize: "同步线程池QueueSize",
+        jobPusherActiveCount: "JobPusher线程池ActiveCount",
+        jobPusherCorePoolSize: "JobPusher线程池CorePoolSize",
+        jobPusherMaximumPoolSize: "JobPusher线程池MaximumPoolSize",
+        jobPusherQueueSize: "JobPusher线程池QueueSize",
+        httpActiveCount: "http线程池ActiveCount",
+        httpCorePoolSize: "http线程池CorePoolSize",
+        httpMaximumPoolSize: "http线程池MaximumPoolSize",
+        httpQueueSize: "http线程池QueueSize"
+    };    
 
     $(document).ready(function () {
 
@@ -216,9 +257,36 @@
                 return "禁用";
             }
         };
+        
+        LTS.colFormatter.runningLabel = function (v, row) {
+           if (row['nodeType'] == 'TASK_TRACKER') {
+	            if (v) {
+	                return "<span style='color:green'><b>正常拉取job</b></span>";
+	            } else {
+	                return "<span style='color:red'>暂停拉取job</span>";
+	            }
+            }else{
+            	return "";
+            }
+        };        
+        
         LTS.colFormatter.optFormat = function (v, row) {
-            return '<a href="javascript:void(0);" class="jvm-info-icon" identity="'+ row.identity +'" target="_blank" title="JVM信息"><span class="label label-info"><i class="fa fa-info-circle"></i> JVM</span></a>';
+            var jvmlink = '<a href="javascript:void(0);" class="jvm-info-icon" identity="'+ row.identity +'" target="_blank" title="JVM信息"><span class="label label-info"><i class="fa fa-info-circle"></i> JVM</span></a>&nbsp;';
+        	if(row.nodeType == 'TASK_TRACKER'){    
+	            if(row.running){
+	           	    return jvmlink + '<a href="javascript:;" class="down-task-btn" identity="' + row.identity + '" + taskTrackerNodeGroup="' + row.group + '"><span class="label label-primary" style="background-color: #DD6B55;"><i class="fa fa-trash-o"></i> 下线</span></a>';
+	            }else{
+	            	return jvmlink + '<a href="javascript:;" class="up-task-btn" identity="' + row.identity + '" + taskTrackerNodeGroup="' + row.group + '"><span class="label label-success"><i class="fa fa-lock"></i> 上线</span></a>';
+	            }
+	        }
+	        
+	        if(row.nodeType == 'JOB_TRACKER'){
+	        	return jvmlink + '<a href="javascript:void(0);" class="thread-info-icon" identity="'+ row.identity +'" target="_blank" title="线程池信息"><span class="label label-info"><i class="fa fa-info-circle"></i> ThreadPool</span></a>';
+	        }else{
+	            return jvmlink;
+	        }
         };
+        
         var ltsTable = $("#ltstableContainer").ltsTable({
             url: 'api/node/node-list-get',
             templateId: 'ltstable'
@@ -234,9 +302,79 @@
             ltsTable.post(params, 1);
         });
         $("#searchBtn").trigger("click");
+        
+        
+        $(document).on("click", ".down-task-btn", function(){
+            var identity = $(this).attr("identity");
+            var group = $(this).attr("group");
+            console.log(identity);
+            
+            swal({
+                title: "确认要下线该tasktracker吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认下线",
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if(isConfirm){
+                    $.ajax({
+		                url: 'api/node/offline-tasktracker.do',
+		                type: 'POST',
+		                dataType: 'JSON',
+		                data: {identity: identity, group: group},
+		                success: function (json) {
+		                    if (json && json['success']) {
+		                        setTimeout(function(){
+		                            location.href = location.href;
+		                        }, 1000);
+		                    } else {
+		                        if (json && json['msg']) {
+		                            swal(json['msg']);
+		                        }
+		                    }
+		                }
+                    });
+                }
+            });            
+        });        
+        
+        $(document).on("click", ".up-task-btn", function(){
+            var identity = $(this).attr("identity");
+            var group = $(this).attr("group");
+            console.log(identity);
+            
+            swal({
+                title: "确认要上线该tasktracker吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认上线",
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if(isConfirm){
+                    $.ajax({
+		                url: 'api/node/online-tasktracker.do',
+		                type: 'POST',
+		                dataType: 'JSON',
+		                data: {identity: identity, group: group},
+		                success: function (json) {
+		                    if (json && json['success']) {
+		                        setTimeout(function(){
+		                            location.href = location.href;
+		                        }, 1000);
+		                    } else {
+		                        if (json && json['msg']) {
+		                            swal(json['msg']);
+		                        }
+		                    }
+		                }
+                    });
+                }
+            });            
+        });        
 
         $(document).on("click", "#reSubscribeBtn", function(){
-
             $.ajax({
                 url: 'api/node/registry-re-subscribe.do',
                 type: 'POST',
@@ -254,8 +392,31 @@
                     }
                 }
             });
-
         });
+        
+    
+       $(document).on("click", ".thread-info-icon", function(){
+        var identity = $(this).attr("identity");
+        console.log(identity);
+
+        $.ajax({
+            url: 'api/jvm/node-thread-info-get.do',
+            type: 'GET',
+            dataType: 'JSON',
+            data: {identity: identity},
+            success: function (json) {
+                if (json && json['success'] && json['results'] == 1) {
+                    var data = JSON.parse(json.rows[0]);
+                    showThreadPoolInfo(identity, data);
+                } else {
+                    if (json && json['msg']) {
+                        swal(json['msg']);
+                    }
+                    showThreadPoolInfo('', {});
+                }
+	           }
+	        });
+	    });        
 
         $(document).on("click", ".jvm-info-icon", function(){
             var identity = $(this).attr("identity");
@@ -286,6 +447,7 @@
         });
     });
 
+
     function showJVMInfo(identity, data) {
         var html = template("jvm-info-template", {
             identity: identity,
@@ -295,12 +457,22 @@
         $("#jvmInfo").html(html);
         $("#jvmInfo-modal").modal("show");
     }
+    
+    function showThreadPoolInfo(identity, data) {
+        var html = template("threadpool-info-template", {
+            identity: identity,
+            data: data,
+            THREAD_KYE_LABEL_MAP: THREAD_KYE_LABEL_MAP
+        });
+        $("#threadpoolInfo").html(html);
+        $("#threadpoolInfo-modal").modal("show");
+    }    
 </script>
 
-<script id="jvm-info-template" type="text/html">
+<script id="threadpool-info-template" type="text/html">
     <div class="ibox border-bottom">
         <div class="ibox-title">
-            <h5>JVM信息 <span class="text-navy">{{identity}}</span></h5>
+            <h5>线程池信息 <span class="text-navy">&nbsp;{{identity}}</span></h5>
         </div>
         <div class="ibox-content" id="cloud-unit">
             <table class="table table-stripped footable footable-loaded no-paging" style="word-break:break-all; word-wrap:break-all;">
@@ -310,6 +482,35 @@
                     <th class="footable-sortable" style="cursor: default;">属性值</th>
                 </tr>
                 </thead>
+                
+                <tbody>
+                <div class="hide">{{index=0}}</div>
+                {{each THREAD_KYE_LABEL_MAP as value key}}
+                <tr class="{{index++ % 2 == 0 ? 'footable-odd' : 'footable-even'}}" style="display: table-row;">
+                    <td><span class="footable-toggle"></span>{{value}}</td>
+                    <td>{{data[key]}}</td>
+                </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+<script id="jvm-info-template" type="text/html">
+    <div class="ibox border-bottom">
+        <div class="ibox-title">
+            <h5>JVM信息 <span class="text-navy">&nbsp;{{identity}}</span></h5>
+        </div>
+        <div class="ibox-content" id="cloud-unit">
+            <table class="table table-stripped footable footable-loaded no-paging" style="word-break:break-all; word-wrap:break-all;">
+                <thead>
+                <tr>
+                    <th class="footable-sortable" style="cursor: default;width:240px;">属性名称</th>
+                    <th class="footable-sortable" style="cursor: default;">属性值</th>
+                </tr>
+                </thead>
+                
                 <tbody>
                 <div class="hide">{{index=0}}</div>
                 {{each KYE_LABEL_MAP as value key}}

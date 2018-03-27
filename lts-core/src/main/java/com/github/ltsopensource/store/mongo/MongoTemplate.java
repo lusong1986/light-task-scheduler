@@ -7,6 +7,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.BasicDBObjectBuilder;
 import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
+
 import org.mongodb.morphia.AdvancedDatastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.query.Query;
@@ -147,7 +148,8 @@ public class MongoTemplate {
         return findAndModify(query, ops, oldVersion, false);
     }
 
-    public <T> T findAndModify(final Query<T> query, final UpdateOperations<T> ops, final boolean oldVersion, final boolean createIfMissing) {
+    @SuppressWarnings("deprecation")
+	public <T> T findAndModify(final Query<T> query, final UpdateOperations<T> ops, final boolean oldVersion, final boolean createIfMissing) {
         return ds.findAndModify(query, ops, oldVersion, createIfMissing);
     }
 

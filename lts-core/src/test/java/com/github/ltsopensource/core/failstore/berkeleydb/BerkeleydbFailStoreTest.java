@@ -1,25 +1,26 @@
 package com.github.ltsopensource.core.failstore.berkeleydb;
 
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.domain.Job;
 import com.github.ltsopensource.core.domain.Pair;
 import com.github.ltsopensource.core.failstore.FailStore;
 import com.github.ltsopensource.core.failstore.FailStoreException;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
+import com.github.ltsopensource.core.json.JSON;
 
 /**
  * Robert HG (254963746@qq.com) on 5/26/15.
  */
 public class BerkeleydbFailStoreTest {
 
-    FailStore failStore;
+	static FailStore failStore;
 
     private String key = "x2x3423412x";
 
@@ -30,8 +31,17 @@ public class BerkeleydbFailStoreTest {
         config.setNodeGroup("test");
         config.setNodeType(NodeType.JOB_CLIENT);
         config.setIdentity("testIdentity");
-        failStore = new BerkeleydbFailStoreFactory().getFailStore(config, getFailStorePath(config));
-        failStore.open();
+
+        
+        
+		if (null == failStore) {
+			synchronized (BerkeleydbFailStoreTest.class) {
+				if (null == failStore) {
+			        failStore = new BerkeleydbFailStoreFactory().getFailStore(config, getFailStorePath(config));
+			        failStore.open();
+				}
+			}
+		}
     }
 
     public String getFailStorePath(Config config) {
@@ -45,7 +55,7 @@ public class BerkeleydbFailStoreTest {
             failStore.put(key + "" + i, job);
         }
         System.out.println("这里debug测试多线程");
-        failStore.close();
+        //failStore.close();
     }
 
     @Test

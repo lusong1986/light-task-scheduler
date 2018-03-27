@@ -171,7 +171,6 @@
                 success: function (json) {
                     if (json && json.success) {
                         $("input[name='nodeGroup']").val("");
-                        $("select[name='nodeType']").val("");
                         $('#searchBtn').trigger("click");
                     } else {
                         json ? swal(json['msg']) : {};

@@ -5,7 +5,9 @@ package com.github.ltsopensource.autoconfigure;
  */
 public class PropertiesConfigurationResolveException extends RuntimeException {
 
-    public PropertiesConfigurationResolveException() {
+	private static final long serialVersionUID = -7857601475872831002L;
+
+	public PropertiesConfigurationResolveException() {
         super();
     }
 

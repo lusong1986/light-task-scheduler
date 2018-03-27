@@ -9,21 +9,21 @@ import com.github.ltsopensource.core.cluster.Config;
  */
 public class CommandBodyWrapper {
 
-    private Config config;
+	private Config config;
 
-    public CommandBodyWrapper(Config config) {
-        this.config = config;
-    }
+	public CommandBodyWrapper(Config config) {
+		this.config = config;
+	}
 
-    public <T extends AbstractRemotingCommandBody> T wrapper(T commandBody) {
-        commandBody.setNodeGroup(config.getNodeGroup());
-        commandBody.setNodeType(config.getNodeType().name());
-        commandBody.setIdentity(config.getIdentity());
-        return commandBody;
-    }
+	public <T extends AbstractRemotingCommandBody> T wrapper(T commandBody) {
+		commandBody.setNodeGroup(config.getNodeGroup());
+		commandBody.setNodeType(config.getNodeType().name());
+		commandBody.setIdentity(config.getIdentity());
+		return commandBody;
+	}
 
-    public static <T extends AbstractRemotingCommandBody> T wrapper(AppContext appContext, T commandBody) {
-        return appContext.getCommandBodyWrapper().wrapper(commandBody);
-    }
+	public static <T extends AbstractRemotingCommandBody> T wrapper(AppContext appContext, T commandBody) {
+		return appContext.getCommandBodyWrapper().wrapper(commandBody);
+	}
 
 }

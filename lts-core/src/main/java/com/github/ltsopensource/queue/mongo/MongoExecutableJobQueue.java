@@ -16,6 +16,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
 import com.mongodb.WriteResult;
+
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 
@@ -97,7 +98,8 @@ public class MongoExecutableJobQueue extends AbstractMongoJobQueue implements Ex
         return wr.getN() == 1;
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public long countJob(String realTaskId, String taskTrackerNodeGroup) {
         String tableName = JobQueueUtils.getExecutableQueueName(taskTrackerNodeGroup);
         Query<JobPo> query = template.createQuery(tableName, JobPo.class);

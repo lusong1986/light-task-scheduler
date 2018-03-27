@@ -1,8 +1,7 @@
 package com.github.ltsopensource.remoting.serialize;
 
-
-import com.github.ltsopensource.core.spi.SPI;
 import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 /**
  * @author Robert HG (254963746@qq.com) on 11/6/15.
@@ -10,9 +9,9 @@ import com.github.ltsopensource.core.constant.ExtConfig;
 @SPI(key = ExtConfig.REMOTING_SERIALIZABLE_DFT, dftValue = "fastjson")
 public interface RemotingSerializable {
 
-    int getId();
+	int getId();
 
-    byte[] serialize(final Object obj) throws Exception;
+	byte[] serialize(final Object obj) throws Exception;
 
-    <T> T deserialize(final byte[] data, Class<T> clazz) throws Exception;
+	<T> T deserialize(final byte[] data, Class<T> clazz) throws Exception;
 }

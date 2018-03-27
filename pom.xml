@@ -13,8 +13,8 @@
     <groupId>com.github.ltsopensource</groupId>
     <artifactId>lts-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.7.1-SNAPSHOT</version>
-    <url>https://github.com/ltsopensource/light-task-scheduler.git</url>
+    <version>1.7.0.2</version>
+    
     <modules>
         <module>lts-core</module>
         <module>lts-jobtracker</module>
@@ -29,33 +29,34 @@
 
     <properties>
         <jedis.version>2.7.3</jedis.version>
-        <fastjson.version>1.2.7</fastjson.version>
+        <fastjson.version>1.2.40</fastjson.version>
         <leveldbjni.version>1.8</leveldbjni.version>
-        <curator.version>2.9.1</curator.version>
+        <curator.version>2.12.0</curator.version>
         <zkclient.version>0.1</zkclient.version>
-        <zk.version>3.4.5</zk.version>
-        <mongo.driver.version>3.0.2</mongo.driver.version>
-        <morphia.version>1.0.0-rc1</morphia.version>
+        <zk.version>3.4.8</zk.version>
+        <mongo.driver.version>3.4.3</mongo.driver.version>
+        <morphia.version>1.3.2</morphia.version>
         <junit.version>4.11</junit.version>
-        <netty.version>4.0.20.Final</netty.version>
+        <netty.version>4.0.25.Final</netty.version>
+        <cat.version>1.3.6.6</cat.version>
         <jcl_version>1.1</jcl_version>
         <slf4j.version>1.7.5</slf4j.version>
         <log4j.version>1.2.16</log4j.version>
         <dbutils.version>1.6</dbutils.version>
-        <druid.version>1.0.14</druid.version>
+        <druid.version>1.1.5</druid.version>
         <mysql.version>5.1.26</mysql.version>
         <sleepycat.version>5.0.73</sleepycat.version>
         <rocksdbjni.version>3.10.1</rocksdbjni.version>
         <h2.version>1.4.189</h2.version>
-        <springframework.version>4.2.5.RELEASE</springframework.version>
+        <springframework.version>4.3.12.RELEASE</springframework.version>
         <mina.version>2.0.9</mina.version>
         <hessian.version>4.0.38</hessian.version>
-        <mapdb.version>2.0-beta10</mapdb.version>
+        <mapdb.version>2.0-beta13</mapdb.version>
         <groovy.version>2.4.5</groovy.version>
-        <jackson.version>2.6.3</jackson.version>
-        <aspectj.version>1.7.2</aspectj.version>
+        <jackson.version>2.8.10</jackson.version>
+        <aspectj.version>1.8.11</aspectj.version>
         <javax.mail.version>1.5.4</javax.mail.version>
-        <spring.boot.version>1.3.3.RELEASE</spring.boot.version>
+        <spring.boot.version>1.5.8.RELEASE</spring.boot.version>
         <javassist.version>3.20.0-GA</javassist.version>
         <quartz.version>2.2.2</quartz.version>
         <logback.version>1.2.1</logback.version>
@@ -260,6 +261,17 @@
                 <artifactId>logback-classic</artifactId>
                 <version>${logback.version}</version>
             </dependency>
+			<dependency>
+				<groupId>com.dianping.cat</groupId>
+				<artifactId>cat-client</artifactId>
+				<version>${cat.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>log4j</artifactId>
+						<groupId>log4j</groupId>
+					</exclusion>
+				</exclusions>				
+			</dependency>            
         </dependencies>
     </dependencyManagement>
     <profiles>
@@ -273,8 +285,8 @@
                     <plugin>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
-                            <source>1.6</source>
-                            <target>1.6</target>
+                            <source>1.7</source>
+                            <target>1.7</target>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
@@ -303,8 +315,8 @@
                     <plugin>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
-                            <source>1.6</source>
-                            <target>1.6</target>
+                            <source>1.7</source>
+                            <target>1.7</target>
                             <encoding>UTF-8</encoding>
                         </configuration>
                     </plugin>
@@ -354,7 +366,7 @@
             </build>
         </profile>
     </profiles>
-
+    
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -363,17 +375,4 @@
         </license>
     </licenses>
 
-    <scm>
-        <connection>scm:git:https://github.com/ltsopensource/light-task-scheduler.git</connection>
-        <developerConnection>scm:git:https://github.com/ltsopensource/light-task-scheduler.git</developerConnection>
-        <url>https://github.com/ltsopensource/light-task-scheduler.git</url>
-    </scm>
-
-    <developers>
-        <developer>
-            <id>hugui.hg</id>
-            <name>hugui</name>
-            <email>254963746@qq.com</email>
-        </developer>
-    </developers>
 </project>

@@ -13,77 +13,77 @@ import com.github.ltsopensource.tasktracker.support.JobPullMachine;
  */
 public class TaskTrackerAppContext extends AppContext {
 
-    private RemotingClientDelegate remotingClient;
-    // runner 线程池
-    private RunnerPool runnerPool;
-    //
-    private RunnerFactory runnerFactory;
-    // Pull Job Machine
-    private JobPullMachine jobPullMachine;
+	private RemotingClientDelegate remotingClient;
+	// runner 线程池
+	private RunnerPool runnerPool;
+	//
+	private RunnerFactory runnerFactory;
+	// Pull Job Machine
+	private JobPullMachine jobPullMachine;
 
-    private StopWorkingMonitor stopWorkingMonitor;
-    /**
-     * 业务日志记录级别
-     */
-    private Level bizLogLevel;
-    /**
-     * 执行任务的class
-     */
-    private Class<?> jobRunnerClass;
+	private StopWorkingMonitor stopWorkingMonitor;
+	/**
+	 * 业务日志记录级别
+	 */
+	private Level bizLogLevel;
+	/**
+	 * 执行任务的class
+	 */
+	private Class<?> jobRunnerClass;
 
-    public StopWorkingMonitor getStopWorkingMonitor() {
-        return stopWorkingMonitor;
-    }
+	public StopWorkingMonitor getStopWorkingMonitor() {
+		return stopWorkingMonitor;
+	}
 
-    public void setStopWorkingMonitor(StopWorkingMonitor stopWorkingMonitor) {
-        this.stopWorkingMonitor = stopWorkingMonitor;
-    }
+	public void setStopWorkingMonitor(StopWorkingMonitor stopWorkingMonitor) {
+		this.stopWorkingMonitor = stopWorkingMonitor;
+	}
 
-    public RunnerPool getRunnerPool() {
-        return runnerPool;
-    }
+	public RunnerPool getRunnerPool() {
+		return runnerPool;
+	}
 
-    public void setRunnerPool(RunnerPool runnerPool) {
-        this.runnerPool = runnerPool;
-    }
+	public void setRunnerPool(RunnerPool runnerPool) {
+		this.runnerPool = runnerPool;
+	}
 
-    public Level getBizLogLevel() {
-        return bizLogLevel;
-    }
+	public Level getBizLogLevel() {
+		return bizLogLevel;
+	}
 
-    public void setBizLogLevel(Level bizLogLevel) {
-        this.bizLogLevel = bizLogLevel;
-    }
+	public void setBizLogLevel(Level bizLogLevel) {
+		this.bizLogLevel = bizLogLevel;
+	}
 
-    public Class<?> getJobRunnerClass() {
-        return jobRunnerClass;
-    }
+	public Class<?> getJobRunnerClass() {
+		return jobRunnerClass;
+	}
 
-    public void setJobRunnerClass(Class<?> jobRunnerClass) {
-        this.jobRunnerClass = jobRunnerClass;
-    }
+	public void setJobRunnerClass(Class<?> jobRunnerClass) {
+		this.jobRunnerClass = jobRunnerClass;
+	}
 
-    public RunnerFactory getRunnerFactory() {
-        return runnerFactory;
-    }
+	public RunnerFactory getRunnerFactory() {
+		return runnerFactory;
+	}
 
-    public void setRunnerFactory(RunnerFactory runnerFactory) {
-        this.runnerFactory = runnerFactory;
-    }
+	public void setRunnerFactory(RunnerFactory runnerFactory) {
+		this.runnerFactory = runnerFactory;
+	}
 
-    public RemotingClientDelegate getRemotingClient() {
-        return remotingClient;
-    }
+	public RemotingClientDelegate getRemotingClient() {
+		return remotingClient;
+	}
 
-    public void setRemotingClient(RemotingClientDelegate remotingClient) {
-        this.remotingClient = remotingClient;
-    }
+	public void setRemotingClient(RemotingClientDelegate remotingClient) {
+		this.remotingClient = remotingClient;
+	}
 
-    public JobPullMachine getJobPullMachine() {
-        return jobPullMachine;
-    }
+	public JobPullMachine getJobPullMachine() {
+		return jobPullMachine;
+	}
 
-    public void setJobPullMachine(JobPullMachine jobPullMachine) {
-        this.jobPullMachine = jobPullMachine;
-    }
+	public void setJobPullMachine(JobPullMachine jobPullMachine) {
+		this.jobPullMachine = jobPullMachine;
+	}
 }

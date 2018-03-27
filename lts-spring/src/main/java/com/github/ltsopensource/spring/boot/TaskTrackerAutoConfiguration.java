@@ -1,19 +1,7 @@
 package com.github.ltsopensource.spring.boot;
 
-import com.github.ltsopensource.core.cluster.AbstractJobNode;
-import com.github.ltsopensource.core.cluster.NodeType;
-import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.commons.utils.StringUtils;
-import com.github.ltsopensource.spring.boot.annotation.EnableTaskTracker;
-import com.github.ltsopensource.spring.boot.annotation.JobRunner4TaskTracker;
-import com.github.ltsopensource.spring.boot.properties.TaskTrackerProperties;
-import com.github.ltsopensource.spring.tasktracker.JobDispatcher;
-import com.github.ltsopensource.spring.tasktracker.JobRunnerHolder;
-import com.github.ltsopensource.spring.tasktracker.LTS;
-import com.github.ltsopensource.tasktracker.TaskTracker;
-import com.github.ltsopensource.tasktracker.TaskTrackerBuilder;
-import com.github.ltsopensource.tasktracker.runner.JobRunner;
-import com.github.ltsopensource.tasktracker.runner.RunnerFactory;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -23,7 +11,21 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Map;
+import com.github.ltsopensource.core.cluster.AbstractJobNode;
+import com.github.ltsopensource.core.cluster.NodeType;
+import com.github.ltsopensource.core.commons.utils.CollectionUtils;
+import com.github.ltsopensource.spring.boot.annotation.EnableTaskTracker;
+import com.github.ltsopensource.spring.boot.annotation.JobRunner4TaskTracker;
+import com.github.ltsopensource.spring.boot.properties.TaskTrackerProperties;
+import com.github.ltsopensource.spring.tasktracker.JobDispatcher;
+import com.github.ltsopensource.spring.tasktracker.JobRunnerHolder;
+import com.github.ltsopensource.spring.tasktracker.LTS;
+import com.github.ltsopensource.tasktracker.TaskTracker;
+import com.github.ltsopensource.tasktracker.TaskTrackerBuilder;
+import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
+import com.github.ltsopensource.tasktracker.domain.TaskTrackerNode;
+import com.github.ltsopensource.tasktracker.runner.JobRunner;
+import com.github.ltsopensource.tasktracker.runner.RunnerFactory;
 
 /**
  * @author Robert HG (254963746@qq.com) on 4/9/16.
@@ -107,7 +109,7 @@ public class TaskTrackerAutoConfiguration extends AbstractAutoConfiguration {
     }
 
     @Override
-    protected AbstractJobNode getJobNode() {
+    protected AbstractJobNode<TaskTrackerNode, TaskTrackerAppContext> getJobNode() {
         return taskTracker;
     }
 }

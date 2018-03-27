@@ -5,58 +5,58 @@ package com.github.ltsopensource.jvmmonitor.mbean;
  */
 public interface JVMMemoryMBean {
 
-    // Heap
-    long getHeapMemoryCommitted();
+	// Heap
+	long getHeapMemoryCommitted();
 
-    long getHeapMemoryInit();
+	long getHeapMemoryInit();
 
-    long getHeapMemoryMax();
+	long getHeapMemoryMax();
 
-    long getHeapMemoryUsed();
+	long getHeapMemoryUsed();
 
-    // NonHeap
-    long getNonHeapMemoryCommitted();
+	// NonHeap
+	long getNonHeapMemoryCommitted();
 
-    long getNonHeapMemoryInit();
+	long getNonHeapMemoryInit();
 
-    long getNonHeapMemoryMax();
+	long getNonHeapMemoryMax();
 
-    long getNonHeapMemoryUsed();
+	long getNonHeapMemoryUsed();
 
-    // PermGen
-    long getPermGenCommitted();
+	// PermGen
+	long getPermGenCommitted();
 
-    long getPermGenInit();
+	long getPermGenInit();
 
-    long getPermGenMax();
+	long getPermGenMax();
 
-    long getPermGenUsed();
+	long getPermGenUsed();
 
-    // OldGen
-    long getOldGenCommitted();
+	// OldGen
+	long getOldGenCommitted();
 
-    long getOldGenInit();
+	long getOldGenInit();
 
-    long getOldGenMax();
+	long getOldGenMax();
 
-    long getOldGenUsed();
+	long getOldGenUsed();
 
-    // EdenSpace
-    long getEdenSpaceCommitted();
+	// EdenSpace
+	long getEdenSpaceCommitted();
 
-    long getEdenSpaceInit();
+	long getEdenSpaceInit();
 
-    long getEdenSpaceMax();
+	long getEdenSpaceMax();
 
-    long getEdenSpaceUsed();
+	long getEdenSpaceUsed();
 
-    // Survivor
-    long getSurvivorCommitted();
+	// Survivor
+	long getSurvivorCommitted();
 
-    long getSurvivorInit();
+	long getSurvivorInit();
 
-    long getSurvivorMax();
+	long getSurvivorMax();
 
-    long getSurvivorUsed();
+	long getSurvivorUsed();
 
 }

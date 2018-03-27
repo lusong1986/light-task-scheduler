@@ -15,7 +15,7 @@ public class CronExpressionTest {
     @Test
     public void test1() throws ParseException {
 
-        CronExpression cronExpression = new CronExpression("59 23 * * *");
+        CronExpression cronExpression = new CronExpression("59 23 * * * ? 2017");
 
         exec(cronExpression, new Date());
     }

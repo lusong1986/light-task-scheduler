@@ -5,6 +5,5 @@ package com.github.ltsopensource.core.registry;
  */
 public enum NotifyEvent {
 
-    ADD,
-    REMOVE
+	ADD, REMOVE
 }

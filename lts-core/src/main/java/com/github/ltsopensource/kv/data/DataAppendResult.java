@@ -7,7 +7,8 @@ import java.io.Serializable;
  */
 public class DataAppendResult implements Serializable {
 
-    private long fileId;
+	private static final long serialVersionUID = -8925800270657582667L;
+	private long fileId;
     // 写的起始位置
     private long fromIndex;
     // 长度

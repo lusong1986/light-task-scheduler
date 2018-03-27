@@ -6,10 +6,6 @@ package com.github.ltsopensource.core.constant;
  */
 public enum Level {
 
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    NO,     // 不记录
+	DEBUG, INFO, WARN, ERROR, NO, // 不记录
 
 }

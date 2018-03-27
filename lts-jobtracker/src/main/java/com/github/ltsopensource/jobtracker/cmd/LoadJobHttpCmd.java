@@ -15,32 +15,32 @@ import com.github.ltsopensource.jobtracker.domain.JobTrackerAppContext;
  */
 public class LoadJobHttpCmd implements HttpCmdProc {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(LoadJobHttpCmd.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(LoadJobHttpCmd.class);
 
-    private JobTrackerAppContext appContext;
+	private JobTrackerAppContext appContext;
 
-    public LoadJobHttpCmd(JobTrackerAppContext appContext) {
-        this.appContext = appContext;
-    }
+	public LoadJobHttpCmd(JobTrackerAppContext appContext) {
+		this.appContext = appContext;
+	}
 
-    @Override
-    public String nodeIdentity() {
-        return appContext.getConfig().getIdentity();
-    }
+	@Override
+	public String nodeIdentity() {
+		return appContext.getConfig().getIdentity();
+	}
 
-    @Override
-    public String getCommand() {
-        return HttpCmdNames.HTTP_CMD_LOAD_JOB;
-    }
+	@Override
+	public String getCommand() {
+		return HttpCmdNames.HTTP_CMD_LOAD_JOB;
+	}
 
-    @Override
-    public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
+	@Override
+	public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
 
-        String taskTrackerNodeGroup = request.getParam("nodeGroup");
-        appContext.getPreLoader().load(taskTrackerNodeGroup);
+		String taskTrackerNodeGroup = request.getParam("nodeGroup");
+		appContext.getPreLoader().load(taskTrackerNodeGroup);
 
-        LOGGER.info("load job succeed : nodeGroup={}", taskTrackerNodeGroup);
+		LOGGER.info("load job succeed : nodeGroup={}", taskTrackerNodeGroup);
 
-        return HttpCmdResponse.newResponse(true, "load job succeed");
-    }
+		return HttpCmdResponse.newResponse(true, "load job succeed");
+	}
 }

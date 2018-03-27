@@ -22,7 +22,8 @@ public class MemIndex<K, V> implements Index<K, V> {
     private static final Logger LOGGER = LoggerFactory.getLogger(MemIndex.class);
     private StoreTxLogPosition lastTxLog;
     private ConcurrentMap<K, IndexItem<K>> indexMap;
-    private StoreConfig storeConfig;
+    @SuppressWarnings("unused")
+	private StoreConfig storeConfig;
     private DataBlockEngine<K, V> dataBlockEngine;
     private DataCache<K, V> dataCache;
     private AtomicLong lastSnapshotChangeNum = new AtomicLong(0);

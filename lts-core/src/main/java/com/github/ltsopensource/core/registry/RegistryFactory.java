@@ -10,20 +10,20 @@ import com.github.ltsopensource.core.registry.zookeeper.ZookeeperRegistry;
  */
 public class RegistryFactory {
 
-    public static Registry getRegistry(AppContext appContext) {
+	public static Registry getRegistry(AppContext appContext) {
 
-        String address = appContext.getConfig().getRegistryAddress();
-        if (StringUtils.isEmpty(address)) {
-            throw new IllegalArgumentException("address is null！");
-        }
-        if (address.startsWith("zookeeper://")) {
-            return new ZookeeperRegistry(appContext);
-        } else if (address.startsWith("redis://")) {
-            return new RedisRegistry(appContext);
-        } else if (address.startsWith("multicast://")) {
-//            return new MulticastRegistry(config);
-        }
-        throw new IllegalArgumentException("illegal address protocol");
-    }
+		String address = appContext.getConfig().getRegistryAddress();
+		if (StringUtils.isEmpty(address)) {
+			throw new IllegalArgumentException("address is null！");
+		}
+		if (address.startsWith("zookeeper://")) {
+			return new ZookeeperRegistry(appContext);
+		} else if (address.startsWith("redis://")) {
+			return new RedisRegistry(appContext);
+		} else if (address.startsWith("multicast://")) {
+			// return new MulticastRegistry(config);
+		}
+		throw new IllegalArgumentException("illegal address protocol");
+	}
 
 }

@@ -1,7 +1,9 @@
 package com.github.ltsopensource.jobtracker.processor;
 
+import com.dianping.cat.message.Transaction;
 import com.github.ltsopensource.biz.logger.domain.JobLogPo;
 import com.github.ltsopensource.biz.logger.domain.LogType;
+import com.github.ltsopensource.core.commons.utils.CatUtils;
 import com.github.ltsopensource.core.constant.Level;
 import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.core.logger.LoggerFactory;
@@ -20,54 +22,66 @@ import com.github.ltsopensource.remoting.protocol.RemotingCommand;
  */
 public class JobCancelProcessor extends AbstractRemotingProcessor {
 
-    private final Logger LOGGER = LoggerFactory.getLogger(JobCancelProcessor.class);
+	private final Logger LOGGER = LoggerFactory.getLogger(JobCancelProcessor.class);
 
-    public JobCancelProcessor(JobTrackerAppContext appContext) {
-        super(appContext);
-    }
+	public JobCancelProcessor(JobTrackerAppContext appContext) {
+		super(appContext);
+	}
 
-    @Override
-    public RemotingCommand processRequest(Channel channel, RemotingCommand request) throws RemotingCommandException {
+	@Override
+	public RemotingCommand processRequest(Channel channel, RemotingCommand request) throws RemotingCommandException {
+		JobCancelRequest jobCancelRequest = request.getBody();
+		String taskId = jobCancelRequest.getTaskId();
+		String taskTrackerNodeGroup = jobCancelRequest.getTaskTrackerNodeGroup();
 
-        JobCancelRequest jobCancelRequest = request.getBody();
+		final Transaction transaction = CatUtils.catTransaction(JobProtos.RequestCode.CANCEL_JOB.name(), taskId);
 
-        String taskId = jobCancelRequest.getTaskId();
-        String taskTrackerNodeGroup = jobCancelRequest.getTaskTrackerNodeGroup();
-        JobPo jobPo = appContext.getCronJobQueue().getJob(taskTrackerNodeGroup, taskId);
-        if (jobPo == null) {
-            jobPo = appContext.getRepeatJobQueue().getJob(taskTrackerNodeGroup, taskId);
-        }
-        if (jobPo == null) {
-            jobPo = appContext.getExecutableJobQueue().getJob(taskTrackerNodeGroup, taskId);
-        }
-        if (jobPo == null) {
-            jobPo = appContext.getSuspendJobQueue().getJob(taskTrackerNodeGroup, taskId);
-        }
+		JobPo jobPo = appContext.getCronJobQueue().getJob(taskTrackerNodeGroup, taskId);
+		if (jobPo == null) {
+			jobPo = appContext.getRepeatJobQueue().getJob(taskTrackerNodeGroup, taskId);
+		}
+		if (jobPo == null) {
+			jobPo = appContext.getExecutableJobQueue().getJob(taskTrackerNodeGroup, taskId);
+		}
+		if (jobPo == null) {
+			jobPo = appContext.getSuspendJobQueue().getJob(taskTrackerNodeGroup, taskId);
+		}
 
-        if (jobPo != null) {
-            // 队列都remove下吧
-            appContext.getExecutableJobQueue().removeBatch(jobPo.getRealTaskId(), jobPo.getTaskTrackerNodeGroup());
-            if (jobPo.isCron()) {
-                appContext.getCronJobQueue().remove(jobPo.getJobId());
-            } else if (jobPo.isRepeatable()) {
-                appContext.getRepeatJobQueue().remove(jobPo.getJobId());
-            }
-            appContext.getSuspendJobQueue().remove(jobPo.getJobId());
+		try {
+			if (jobPo != null) {
+				// 队列都remove下吧
+				appContext.getExecutableJobQueue().removeBatch(jobPo.getRealTaskId(), jobPo.getTaskTrackerNodeGroup());
+				if (jobPo.isCron()) {
+					appContext.getCronJobQueue().remove(jobPo.getJobId());
+				} else if (jobPo.isRepeatable()) {
+					appContext.getRepeatJobQueue().remove(jobPo.getJobId());
+				}
+				appContext.getSuspendJobQueue().remove(jobPo.getJobId());
 
-            // 记录日志
-            JobLogPo jobLogPo = JobDomainConverter.convertJobLog(jobPo);
-            jobLogPo.setSuccess(true);
-            jobLogPo.setLogType(LogType.DEL);
-            jobLogPo.setLogTime(SystemClock.now());
-            jobLogPo.setLevel(Level.INFO);
-            appContext.getJobLogger().log(jobLogPo);
+				appContext.getJobGrayFlag().remove(jobPo.getTaskId());
+				appContext.getExecutableJobDependency().remove(jobPo.getJobId());
+				appContext.getExecutableJobDependency().removeDependency(jobPo.getJobId(),
+						jobPo.getTaskTrackerNodeGroup());
 
-            LOGGER.info("Cancel Job success , jobId={}, taskId={}, taskTrackerNodeGroup={}", jobPo.getJobId(), taskId, taskTrackerNodeGroup);
-            return RemotingCommand.createResponseCommand(JobProtos
-                    .ResponseCode.JOB_CANCEL_SUCCESS.code());
-        }
+				// 记录日志
+				JobLogPo jobLogPo = JobDomainConverter.convertJobLog(jobPo);
+				jobLogPo.setSuccess(true);
+				jobLogPo.setLogType(LogType.DEL);
+				jobLogPo.setLogTime(SystemClock.now());
+				jobLogPo.setLevel(Level.INFO);
+				appContext.getJobLogger().log(jobLogPo);
 
-        return RemotingCommand.createResponseCommand(JobProtos
-                .ResponseCode.JOB_CANCEL_FAILED.code(), "Job maybe running");
-    }
+				LOGGER.info("Cancel Job success , jobId={}, taskId={}, taskTrackerNodeGroup={}", jobPo.getJobId(),
+						taskId, taskTrackerNodeGroup);
+				CatUtils.catSuccess(transaction);
+				return RemotingCommand.createResponseCommand(JobProtos.ResponseCode.JOB_CANCEL_SUCCESS.code());
+			}
+
+			CatUtils.recordEvent(false, taskId, "JOB_CANCEL_FAILED");
+			return RemotingCommand.createResponseCommand(JobProtos.ResponseCode.JOB_CANCEL_FAILED.code(),
+					"Job maybe running");
+		} finally {
+			CatUtils.catComplete(transaction);
+		}
+	}
 }

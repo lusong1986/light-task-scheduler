@@ -5,7 +5,7 @@ package com.github.ltsopensource.zookeeper;
  */
 public interface DataListener {
 
-    void dataChange(String dataPath, Object data) throws Exception;
+	void dataChange(String dataPath, Object data) throws Exception;
 
-    void dataDeleted(String dataPath) throws Exception;
+	void dataDeleted(String dataPath) throws Exception;
 }

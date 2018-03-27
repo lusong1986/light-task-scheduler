@@ -1,10 +1,10 @@
 package com.github.ltsopensource.biz.logger;
 
+import java.util.List;
+
+import com.github.ltsopensource.admin.response.PaginationRsp;
 import com.github.ltsopensource.biz.logger.domain.JobLogPo;
 import com.github.ltsopensource.biz.logger.domain.JobLoggerRequest;
-import com.github.ltsopensource.admin.response.PaginationRsp;
-
-import java.util.List;
 
 /**
  * 执行任务日志记录器
@@ -13,9 +13,9 @@ import java.util.List;
  */
 public interface JobLogger {
 
-    public void log(JobLogPo jobLogPo);
+	public void log(JobLogPo jobLogPo);
 
-    public void log(List<JobLogPo> jobLogPos);
+	public void log(List<JobLogPo> jobLogPos);
 
-    public PaginationRsp<JobLogPo> search(JobLoggerRequest request);
+	public PaginationRsp<JobLogPo> search(JobLoggerRequest request);
 }

@@ -1,5 +1,14 @@
 package com.github.ltsopensource.jobtracker.support.checker;
 
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import com.github.ltsopensource.core.commons.utils.CatUtils;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
 import com.github.ltsopensource.core.factory.NamedThreadFactory;
 import com.github.ltsopensource.core.json.JSON;
@@ -8,14 +17,6 @@ import com.github.ltsopensource.core.logger.LoggerFactory;
 import com.github.ltsopensource.core.support.SystemClock;
 import com.github.ltsopensource.jobtracker.domain.JobTrackerAppContext;
 import com.github.ltsopensource.queue.domain.JobPo;
-
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * to fix the executable dead job
@@ -78,6 +79,7 @@ public class ExecutableDeadJobChecker {
                 for (JobPo jobPo : deadJobPo) {
                     appContext.getExecutableJobQueue().resume(jobPo);
                     LOGGER.info("Fix executable job : {} ", JSON.toJSONString(jobPo));
+        			CatUtils.recordEvent(true, jobPo.getTaskId(), "FIX_EXECUTABLE_DEADJOB");
                 }
             }
         }

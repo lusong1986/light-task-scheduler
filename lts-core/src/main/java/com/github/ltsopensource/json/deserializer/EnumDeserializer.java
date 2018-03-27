@@ -15,7 +15,7 @@ public class EnumDeserializer implements Deserializer {
         this.enumType = enumType;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public <T> T deserialize(Object object, Type type) {
         if (object == null) {
             return null;

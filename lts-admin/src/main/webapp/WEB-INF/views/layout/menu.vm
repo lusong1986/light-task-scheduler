@@ -23,11 +23,14 @@
                 <a href="#"><i class="fa fa-random"></i> <span class="nav-label">任务队列管理</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="${contextPath}/job-add.htm">任务添加</a></li>
+                    <li><a href="${contextPath}/job-dependency.htm">依赖任务</a></li>
+                    <li><a href="${contextPath}/job-gray-list.htm">灰度任务</a></li>
                     <li><a href="${contextPath}/cron-job-queue.htm">Cron任务</a></li>
                     <li><a href="${contextPath}/repeat-job-queue.htm">Repeat任务</a></li>
                     <li><a href="${contextPath}/suspend-job-queue.htm">暂停任务</a></li>
                     <li><a href="${contextPath}/executing-job-queue.htm">执行中的任务</a></li>
                     <li><a href="${contextPath}/executable-job-queue.htm">等待执行的任务</a></li>
+                    <li><a href="${contextPath}/timeline.htm">时间轴</a></li>
                     <li><a href="${contextPath}/load-job.htm">手动加载任务</a></li>
                 </ul>
             </li>

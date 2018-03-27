@@ -50,15 +50,15 @@
                                        id="triggerTime"
                                        name="triggerTime"
                                        date-format="yyyy-MM-dd HH:mm:ss"
-                                       placeholder="请输入触发时间"/>
+                                       placeholder="触发时间"/>
                             </div>
                             <div class="col-sm-2 lts-repeat-job-group" style="display:none;">
                                 <input type="text" class="form-control" name="repeatInterval"
-                                       placeholder="请输入触发时间间隔"/>
+                                       placeholder="触发时间间隔（毫秒）"/>
                             </div>
                             <div class="col-sm-2 lts-repeat-job-group" style="display:none;">
                                 <input type="text" class="form-control" name="repeatCount"
-                                       placeholder="请输入重复次数"/>
+                                       placeholder="重复次数"/>
                             </div>
                         </div>
                         <div class="form-group lts-repeat-job-group lts-cron-job-group" style="display: none;">
@@ -121,12 +121,26 @@
                                 </select>
                             </div>
                         </div>
+                        
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">灰度组</label>
+
+                            <div class="col-sm-3">
+                                <select name="gray" class="form-control">
+                                    <option value="">-- 请选择灰度组，可不选 --</option>
+                                    #foreach($gray in $grayGroups)
+                                        <option value="$gray">$gray</option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>                        
+                        
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户参数</label>
 
                             <div class="col-sm-4">
                                 <textarea type="text" class="form-control" name="extParams"
-                                          placeholder="请输入用户参数 JSON格式【非必填】"></textarea>
+                                          placeholder="用户参数 JSON格式【非必填】"></textarea>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -238,17 +252,23 @@
                 return;
             }
             if (!params['submitNodeGroup'] && params['needFeedback'] == 'true') {
-                sweetAlert("请选择提交节点组", "需要反馈客户端必须选择提交节点组,如果列表中没有，请在节点组管理中添加，并启动改节点。", "error");
+                sweetAlert("请选择提交节点组", "需要反馈客户端必须选择提交节点组,如果列表中没有，请在节点组管理中添加，并启动该节点。", "error");
                 return;
             }
             if (!params['taskTrackerNodeGroup']) {
-                sweetAlert("请选择执行节点组", "如果列表中没有，请在节点组管理中添加，并启动改节点。", "error");
+                sweetAlert("请选择执行节点组", "如果列表中没有，请在节点组管理中添加，并启动该节点。", "error");
                 return;
             }
             if (!params['maxRetryTimes'] || !/^\d+$/.test(params['maxRetryTimes'])) {
                 sweetAlert("最大重试次数必须为非负整数", "最大重试次数必须为非负整数", "error");
                 return;
             }
+            
+			var maxRetryTimes = params['maxRetryTimes'];
+            if (maxRetryTimes>10) {
+                sweetAlert("最大重试次数不能超过10", "最大重试次数不能超过10", "error");
+             	return;
+            }            
 
             var extParams = params['extParams'];
             if (extParams) {

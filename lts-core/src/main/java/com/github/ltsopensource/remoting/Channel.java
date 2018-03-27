@@ -1,6 +1,5 @@
 package com.github.ltsopensource.remoting;
 
-
 import java.net.SocketAddress;
 
 /**
@@ -8,17 +7,17 @@ import java.net.SocketAddress;
  */
 public interface Channel {
 
-    SocketAddress localAddress();
+	SocketAddress localAddress();
 
-    SocketAddress remoteAddress();
+	SocketAddress remoteAddress();
 
-    ChannelHandler writeAndFlush(Object msg);
+	ChannelHandler writeAndFlush(Object msg);
 
-    ChannelHandler close();
+	ChannelHandler close();
 
-    boolean isConnected();
+	boolean isConnected();
 
-    boolean isOpen();
+	boolean isOpen();
 
-    boolean isClosed();
+	boolean isClosed();
 }

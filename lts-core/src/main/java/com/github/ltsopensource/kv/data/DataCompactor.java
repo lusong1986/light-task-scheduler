@@ -20,9 +20,11 @@ public class DataCompactor<K, V> {
 
     private static final Logger LOGGER = DB.LOGGER;
     private ScheduledExecutorService executorService;
-    private ScheduledFuture<?> future;
+    @SuppressWarnings("unused")
+	private ScheduledFuture<?> future;
     private StoreConfig storeConfig;
-    private Index<K, V> index;
+    @SuppressWarnings("unused")
+	private Index<K, V> index;
     private DataBlockEngine<K, V> dataBlockEngine;
     private AtomicBoolean running = new AtomicBoolean(false);
 
@@ -47,7 +49,8 @@ public class DataCompactor<K, V> {
                 storeConfig.getDataBlockCompactCheckInterval(), TimeUnit.MILLISECONDS);
     }
 
-    private void compact() {
+    @SuppressWarnings("unused")
+	private void compact() {
         // 未完成的compact文件
 
         // 检查是否有需要合并的block, 容量小于50%

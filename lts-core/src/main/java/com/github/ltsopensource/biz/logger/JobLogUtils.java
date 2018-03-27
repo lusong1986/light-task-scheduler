@@ -12,12 +12,12 @@ import com.github.ltsopensource.queue.domain.JobPo;
  */
 public class JobLogUtils {
 
-    public static void log(LogType logType, JobPo jobPo, JobLogger jobLogger) {
-        JobLogPo jobLogPo = JobDomainConverter.convertJobLog(jobPo);
-        jobLogPo.setSuccess(true);
-        jobLogPo.setLogType(logType);
-        jobLogPo.setLogTime(SystemClock.now());
-        jobLogPo.setLevel(Level.INFO);
-        jobLogger.log(jobLogPo);
-    }
+	public static void log(LogType logType, JobPo jobPo, JobLogger jobLogger) {
+		JobLogPo jobLogPo = JobDomainConverter.convertJobLog(jobPo);
+		jobLogPo.setSuccess(true);
+		jobLogPo.setLogType(logType);
+		jobLogPo.setLogTime(SystemClock.now());
+		jobLogPo.setLevel(Level.INFO);
+		jobLogger.log(jobLogPo);
+	}
 }

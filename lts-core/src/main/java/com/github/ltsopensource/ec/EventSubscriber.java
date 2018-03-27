@@ -6,28 +6,28 @@ package com.github.ltsopensource.ec;
  */
 public class EventSubscriber {
 
-    public EventSubscriber(String id, Observer observer) {
-        this.id = id;
-        this.observer = observer;
-    }
+	public EventSubscriber(String id, Observer observer) {
+		this.id = id;
+		this.observer = observer;
+	}
 
-    private String id;
+	private String id;
 
-    private Observer observer;
+	private Observer observer;
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public Observer getObserver() {
-        return observer;
-    }
+	public Observer getObserver() {
+		return observer;
+	}
 
-    public void setObserver(Observer observer) {
-        this.observer = observer;
-    }
+	public void setObserver(Observer observer) {
+		this.observer = observer;
+	}
 }

@@ -9,43 +9,43 @@ import com.github.ltsopensource.tasktracker.logger.BizLogger;
  */
 public class JobContext {
 
-    /**
-     * 用户提交的job
-     */
-    private Job job;
-    /**
-     * 额外的一些信息
-     */
-    private JobExtInfo jobExtInfo;
+	/**
+	 * 用户提交的job
+	 */
+	private Job job;
+	/**
+	 * 额外的一些信息
+	 */
+	private JobExtInfo jobExtInfo;
 
-    private BizLogger bizLogger;
+	private BizLogger bizLogger;
 
-    public BizLogger getBizLogger() {
-        return bizLogger;
-    }
+	public BizLogger getBizLogger() {
+		return bizLogger;
+	}
 
-    public void setBizLogger(BizLogger bizLogger) {
-        this.bizLogger = bizLogger;
-    }
+	public void setBizLogger(BizLogger bizLogger) {
+		this.bizLogger = bizLogger;
+	}
 
-    public Job getJob() {
-        return job;
-    }
+	public Job getJob() {
+		return job;
+	}
 
-    public void setJob(Job job) {
-        this.job = job;
-    }
+	public void setJob(Job job) {
+		this.job = job;
+	}
 
-    public JobExtInfo getJobExtInfo() {
-        return jobExtInfo;
-    }
+	public JobExtInfo getJobExtInfo() {
+		return jobExtInfo;
+	}
 
-    public void setJobExtInfo(JobExtInfo jobExtInfo) {
-        this.jobExtInfo = jobExtInfo;
-    }
+	public void setJobExtInfo(JobExtInfo jobExtInfo) {
+		this.jobExtInfo = jobExtInfo;
+	}
 
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this);
-    }
+	@Override
+	public String toString() {
+		return JSON.toJSONString(this);
+	}
 }

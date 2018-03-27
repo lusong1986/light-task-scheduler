@@ -5,7 +5,9 @@ package com.github.ltsopensource.core.exception;
  */
 public class ConfigPropertiesIllegalException extends RuntimeException {
 
-    public ConfigPropertiesIllegalException() {
+	private static final long serialVersionUID = 8493258338874464779L;
+
+	public ConfigPropertiesIllegalException() {
         super();
     }
 

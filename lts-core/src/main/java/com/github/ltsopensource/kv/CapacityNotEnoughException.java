@@ -5,7 +5,9 @@ package com.github.ltsopensource.kv;
  */
 public class CapacityNotEnoughException extends DBException{
 
-    public CapacityNotEnoughException() {
+	private static final long serialVersionUID = 8718567768564607688L;
+
+	public CapacityNotEnoughException() {
     }
 
     public CapacityNotEnoughException(String s) {

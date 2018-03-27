@@ -8,16 +8,16 @@ import com.github.ltsopensource.core.constant.Environment;
  */
 public class LTSConfig {
 
-    private static Environment environment = Environment.ONLINE;
+	private static Environment environment = Environment.ONLINE;
 
-    public static Environment getEnvironment() {
-        if (environment == null) {
-            return Environment.ONLINE;
-        }
-        return environment;
-    }
+	public static Environment getEnvironment() {
+		if (environment == null) {
+			return Environment.ONLINE;
+		}
+		return environment;
+	}
 
-    public static void setEnvironment(Environment environment) {
-        LTSConfig.environment = environment;
-    }
+	public static void setEnvironment(Environment environment) {
+		LTSConfig.environment = environment;
+	}
 }

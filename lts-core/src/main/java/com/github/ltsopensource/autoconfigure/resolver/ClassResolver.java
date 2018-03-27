@@ -21,7 +21,8 @@ public class ClassResolver extends AbstractResolver {
                 return key.equals(name);
             }
 
-            @Override
+            @SuppressWarnings("rawtypes")
+			@Override
             public boolean call(String name, String key, String value) {
                 try {
                     Class clazz = Class.forName(value);

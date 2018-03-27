@@ -226,7 +226,8 @@ public class MessageFormatter {
 
     }
 
-    private static void objectArrayAppend(StringBuffer sbuf, Object[] a,
+    @SuppressWarnings("unchecked")
+	private static void objectArrayAppend(StringBuffer sbuf, Object[] a,
                                           Map seenMap) {
         sbuf.append('[');
         if (!seenMap.containsKey(a)) {

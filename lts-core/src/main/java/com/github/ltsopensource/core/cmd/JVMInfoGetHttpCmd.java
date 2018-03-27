@@ -16,32 +16,32 @@ import java.util.Map;
  */
 public class JVMInfoGetHttpCmd implements HttpCmdProc {
 
-    private Config config;
+	private Config config;
 
-    public JVMInfoGetHttpCmd(Config config) {
-        this.config = config;
-    }
+	public JVMInfoGetHttpCmd(Config config) {
+		this.config = config;
+	}
 
-    @Override
-    public String nodeIdentity() {
-        return config.getIdentity();
-    }
+	@Override
+	public String nodeIdentity() {
+		return config.getIdentity();
+	}
 
-    @Override
-    public String getCommand() {
-        return HttpCmdNames.HTTP_CMD_JVM_INFO_GET;
-    }
+	@Override
+	public String getCommand() {
+		return HttpCmdNames.HTTP_CMD_JVM_INFO_GET;
+	}
 
-    @Override
-    public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
+	@Override
+	public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
 
-        Map<String, Object> jvmInfo = JVMCollector.getJVMInfo();
+		Map<String, Object> jvmInfo = JVMCollector.getJVMInfo();
 
-        HttpCmdResponse response = new HttpCmdResponse();
-        response.setSuccess(true);
-        response.setObj(JSON.toJSONString(jvmInfo));
+		HttpCmdResponse response = new HttpCmdResponse();
+		response.setSuccess(true);
+		response.setObj(JSON.toJSONString(jvmInfo));
 
-        return response;
-    }
+		return response;
+	}
 
 }

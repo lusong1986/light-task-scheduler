@@ -7,13 +7,14 @@ import java.util.List;
  */
 public class JobPushResponse extends AbstractRemotingCommandBody {
 
-    private List<String> failedJobIds;
+	private static final long serialVersionUID = 2937733847879956648L;
+	private List<String> failedJobIds;
 
-    public List<String> getFailedJobIds() {
-        return failedJobIds;
-    }
+	public List<String> getFailedJobIds() {
+		return failedJobIds;
+	}
 
-    public void setFailedJobIds(List<String> failedJobIds) {
-        this.failedJobIds = failedJobIds;
-    }
+	public void setFailedJobIds(List<String> failedJobIds) {
+		this.failedJobIds = failedJobIds;
+	}
 }

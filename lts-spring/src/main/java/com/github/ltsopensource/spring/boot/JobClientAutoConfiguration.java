@@ -1,21 +1,24 @@
 package com.github.ltsopensource.spring.boot;
 
-import com.github.ltsopensource.core.cluster.AbstractJobNode;
-import com.github.ltsopensource.core.cluster.NodeType;
-import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.jobclient.JobClient;
-import com.github.ltsopensource.jobclient.JobClientBuilder;
-import com.github.ltsopensource.jobclient.support.JobCompletedHandler;
-import com.github.ltsopensource.spring.boot.annotation.EnableJobClient;
-import com.github.ltsopensource.spring.boot.annotation.JobCompletedHandler4JobClient;
-import com.github.ltsopensource.spring.boot.properties.JobClientProperties;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.Map;
+import com.github.ltsopensource.core.cluster.AbstractJobNode;
+import com.github.ltsopensource.core.cluster.NodeType;
+import com.github.ltsopensource.core.commons.utils.CollectionUtils;
+import com.github.ltsopensource.jobclient.JobClient;
+import com.github.ltsopensource.jobclient.JobClientBuilder;
+import com.github.ltsopensource.jobclient.domain.JobClientAppContext;
+import com.github.ltsopensource.jobclient.domain.JobClientNode;
+import com.github.ltsopensource.jobclient.support.JobCompletedHandler;
+import com.github.ltsopensource.spring.boot.annotation.EnableJobClient;
+import com.github.ltsopensource.spring.boot.annotation.JobCompletedHandler4JobClient;
+import com.github.ltsopensource.spring.boot.properties.JobClientProperties;
 
 /**
  * @author Robert HG (254963746@qq.com) on 4/9/16.
@@ -27,10 +30,10 @@ public class JobClientAutoConfiguration extends AbstractAutoConfiguration {
 
     @Autowired(required = false)
     private JobClientProperties properties;
-    private JobClient jobClient;
+    private  JobClient<JobClientNode, JobClientAppContext> jobClient;
 
     @Bean
-    public JobClient jobClient() {
+    public  JobClient<JobClientNode, JobClientAppContext> jobClient() {
         return jobClient;
     }
 
@@ -60,7 +63,7 @@ public class JobClientAutoConfiguration extends AbstractAutoConfiguration {
     }
 
     @Override
-    protected AbstractJobNode getJobNode() {
+    protected AbstractJobNode<JobClientNode, JobClientAppContext> getJobNode() {
         return jobClient;
     }
 }

@@ -5,7 +5,9 @@ package com.github.ltsopensource.monitor;
  */
 public class CfgException extends RuntimeException {
 
-    public CfgException(String message) {
+	private static final long serialVersionUID = 1524068873727354302L;
+
+	public CfgException(String message) {
         super(message);
     }
 

@@ -1,25 +1,26 @@
 package com.github.ltsopensource.core.failstore.rocksdb;
 
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import com.github.ltsopensource.core.cluster.Config;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
-import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.constant.Constants;
 import com.github.ltsopensource.core.domain.Job;
 import com.github.ltsopensource.core.domain.Pair;
 import com.github.ltsopensource.core.failstore.FailStore;
 import com.github.ltsopensource.core.failstore.FailStoreException;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.util.List;
+import com.github.ltsopensource.core.json.JSON;
 
 /**
  * Robert HG (254963746@qq.com) on 5/27/15.
  */
 public class RocksdbFailStoreTest {
 
-    FailStore failStore;
+	static FailStore failStore;
 
     private String key = "23412x";
 
@@ -30,8 +31,15 @@ public class RocksdbFailStoreTest {
         config.setDataPath(Constants.USER_HOME);
         config.setNodeGroup("test");
         config.setNodeType(NodeType.JOB_CLIENT);
-        failStore = new RocksdbFailStoreFactory().getFailStore(config, getFailStorePath(config));
-        failStore.open();
+        
+		if (null == failStore) {
+			synchronized (RocksdbFailStoreTest.class) {
+				if (null == failStore) {
+			        failStore = new RocksdbFailStoreFactory().getFailStore(config, getFailStorePath(config));
+			        failStore.open();
+				}
+			}
+		}
     }
 
     public String getFailStorePath(Config config) {
@@ -46,7 +54,7 @@ public class RocksdbFailStoreTest {
             failStore.put(key + "" + i, job);
         }
         System.out.println("这里debug测试多线程");
-        failStore.close();
+        //failStore.close();
     }
 
     @Test

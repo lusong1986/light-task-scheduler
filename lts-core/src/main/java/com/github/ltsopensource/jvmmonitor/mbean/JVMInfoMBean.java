@@ -7,42 +7,42 @@ import java.util.Date;
  */
 public interface JVMInfoMBean {
 
-    Date getStartTime();
+	Date getStartTime();
 
-    String getJVM();
+	String getJVM();
 
-    String getJavaVersion();
+	String getJavaVersion();
 
-    String getPID();
+	String getPID();
 
-    String getInputArguments();
+	String getInputArguments();
 
-    String getJavaHome();
+	String getJavaHome();
 
-    String getArch();
+	String getArch();
 
-    String getOSName();
+	String getOSName();
 
-    String getOSVersion();
+	String getOSVersion();
 
-    String getJavaSpecificationVersion();
+	String getJavaSpecificationVersion();
 
-    String getJavaLibraryPath();
+	String getJavaLibraryPath();
 
-    String getFileEncode();
+	String getFileEncode();
 
-    int getAvailableProcessors();
+	int getAvailableProcessors();
 
-    int getLoadedClassCount();
+	int getLoadedClassCount();
 
-    long getTotalLoadedClassCount();
+	long getTotalLoadedClassCount();
 
-    long getUnloadedClassCount();
+	long getUnloadedClassCount();
 
-    long getTotalCompilationTime();
+	long getTotalCompilationTime();
 
-    String  getHostName();
+	String getHostName();
 
-    String getLocalIp();
+	String getLocalIp();
 
 }

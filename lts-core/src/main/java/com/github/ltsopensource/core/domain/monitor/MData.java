@@ -5,24 +5,24 @@ package com.github.ltsopensource.core.domain.monitor;
  */
 public class MData {
 
-    private Long timestamp;
+	private Long timestamp;
 
-    private JvmMData jvmMData;
+	private JvmMData jvmMData;
 
-    public JvmMData getJvmMData() {
-        return jvmMData;
-    }
+	public JvmMData getJvmMData() {
+		return jvmMData;
+	}
 
-    public void setJvmMData(JvmMData jvmMData) {
-        this.jvmMData = jvmMData;
-    }
+	public void setJvmMData(JvmMData jvmMData) {
+		this.jvmMData = jvmMData;
+	}
 
-    public Long getTimestamp() {
-        return timestamp;
-    }
+	public Long getTimestamp() {
+		return timestamp;
+	}
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
 
 }

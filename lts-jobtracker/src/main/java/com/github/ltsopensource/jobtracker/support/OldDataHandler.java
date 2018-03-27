@@ -10,6 +10,6 @@ import com.github.ltsopensource.queue.domain.JobFeedbackPo;
  */
 public interface OldDataHandler {
 
-    boolean handle(JobFeedbackQueue jobFeedbackQueue, JobFeedbackPo jobFeedbackPo, JobFeedbackPo po);
+	boolean handle(JobFeedbackQueue jobFeedbackQueue, JobFeedbackPo jobFeedbackPo, JobFeedbackPo po);
 
 }

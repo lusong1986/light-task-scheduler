@@ -13,6 +13,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.DuplicateKeyException;
 import com.mongodb.WriteResult;
+
 import org.mongodb.morphia.query.Query;
 
 import java.util.List;
@@ -88,7 +89,8 @@ public class MongoJobFeedbackQueue extends MongoRepository implements JobFeedbac
         return template.getCount(query);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public List<JobFeedbackPo> fetchTop(String jobClientNodeGroup, int top) {
         Query<JobFeedbackPo> query = createQuery(jobClientNodeGroup);
         query.order("gmtCreated").limit(top);

@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * @author Robert HG (254963746@qq.com) on 12/15/15.
  */
+@SuppressWarnings("serial")
 public class DataEntry<K, V> implements Serializable {
 
     private K key;

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>lts-parent</artifactId>
         <groupId>com.github.ltsopensource</groupId>
-        <version>1.7.1-SNAPSHOT</version>
+        <version>1.7.0.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -22,6 +22,18 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <scope>provided</scope>
+        </dependency>          
+        
+		<dependency>
+			<groupId>com.dianping.cat</groupId>
+			<artifactId>cat-client</artifactId>
+			<scope>provided</scope>
+		</dependency>        
     </dependencies>
 
 

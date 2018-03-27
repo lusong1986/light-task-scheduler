@@ -10,18 +10,19 @@ import com.github.ltsopensource.remoting.serialize.RemotingSerializable;
  */
 public abstract class AbstractCodec implements Codec {
 
-    protected RemotingSerializable getRemotingSerializable(int serializableTypeId) {
+	protected RemotingSerializable getRemotingSerializable(int serializableTypeId) {
 
-        RemotingSerializable serializable = null;
-        if (serializableTypeId > 0) {
-            serializable = AdaptiveSerializable.getSerializableById(serializableTypeId);
-            if (serializable == null) {
-                throw new IllegalArgumentException("Can not support RemotingSerializable that serializableTypeId=" + serializableTypeId);
-            }
-        } else {
-            serializable = ServiceLoader.load(RemotingSerializable.class, Constants.ADAPTIVE);
-        }
-        return serializable;
-    }
+		RemotingSerializable serializable = null;
+		if (serializableTypeId > 0) {
+			serializable = AdaptiveSerializable.getSerializableById(serializableTypeId);
+			if (serializable == null) {
+				throw new IllegalArgumentException("Can not support RemotingSerializable that serializableTypeId="
+						+ serializableTypeId);
+			}
+		} else {
+			serializable = ServiceLoader.load(RemotingSerializable.class, Constants.ADAPTIVE);
+		}
+		return serializable;
+	}
 
 }

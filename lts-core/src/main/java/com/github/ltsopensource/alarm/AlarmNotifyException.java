@@ -5,7 +5,9 @@ package com.github.ltsopensource.alarm;
  */
 public class AlarmNotifyException extends RuntimeException {
 
-    public AlarmNotifyException() {
+	private static final long serialVersionUID = -3391171843313154451L;
+
+	public AlarmNotifyException() {
         super();
     }
 

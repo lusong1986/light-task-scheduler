@@ -5,19 +5,21 @@ package com.github.ltsopensource.zookeeper.lts;
  */
 public class ZkInterruptedException extends ZkException {
 
-    public ZkInterruptedException() {
-        super();
-    }
+	private static final long serialVersionUID = -7146586841560712410L;
 
-    public ZkInterruptedException(String message) {
-        super(message);
-    }
+	public ZkInterruptedException() {
+		super();
+	}
 
-    public ZkInterruptedException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public ZkInterruptedException(String message) {
+		super(message);
+	}
 
-    public ZkInterruptedException(Throwable cause) {
-        super(cause);
-    }
+	public ZkInterruptedException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public ZkInterruptedException(Throwable cause) {
+		super(cause);
+	}
 }

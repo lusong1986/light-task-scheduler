@@ -1,10 +1,10 @@
 package com.github.ltsopensource.store.jdbc.datasource;
 
-import com.github.ltsopensource.core.cluster.Config;
-import com.github.ltsopensource.core.spi.SPI;
-import com.github.ltsopensource.core.constant.ExtConfig;
-
 import javax.sql.DataSource;
+
+import com.github.ltsopensource.core.cluster.Config;
+import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 /**
  * @author Robert HG (254963746@qq.com) on 10/24/14.
@@ -12,6 +12,6 @@ import javax.sql.DataSource;
 @SPI(key = ExtConfig.JDBC_DATASOURCE_PROVIDER, dftValue = "mysql")
 public interface DataSourceProvider {
 
-    DataSource getDataSource(Config config);
+	DataSource getDataSource(Config config);
 
 }

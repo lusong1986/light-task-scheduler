@@ -5,6 +5,6 @@ import java.sql.SQLException;
 
 public interface ResultSetHandler<T> {
 
-    T handle(ResultSet rs) throws SQLException;
+	T handle(ResultSet rs) throws SQLException;
 
 }

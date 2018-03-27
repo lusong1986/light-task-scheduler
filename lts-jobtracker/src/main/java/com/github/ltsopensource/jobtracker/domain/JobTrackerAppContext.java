@@ -1,5 +1,7 @@
 package com.github.ltsopensource.jobtracker.domain;
 
+import java.util.concurrent.ExecutorService;
+
 import com.github.ltsopensource.biz.logger.JobLogger;
 import com.github.ltsopensource.core.AppContext;
 import com.github.ltsopensource.core.remoting.RemotingServerDelegate;
@@ -13,7 +15,16 @@ import com.github.ltsopensource.jobtracker.support.checker.ExecutingDeadJobCheck
 import com.github.ltsopensource.jobtracker.support.checker.FeedbackJobSendChecker;
 import com.github.ltsopensource.jobtracker.support.cluster.JobClientManager;
 import com.github.ltsopensource.jobtracker.support.cluster.TaskTrackerManager;
-import com.github.ltsopensource.queue.*;
+import com.github.ltsopensource.queue.CronJobQueue;
+import com.github.ltsopensource.queue.ExecutableJobDependency;
+import com.github.ltsopensource.queue.ExecutableJobQueue;
+import com.github.ltsopensource.queue.ExecutingJobQueue;
+import com.github.ltsopensource.queue.JobFeedbackQueue;
+import com.github.ltsopensource.queue.JobGrayFlag;
+import com.github.ltsopensource.queue.NodeGroupStore;
+import com.github.ltsopensource.queue.PreLoader;
+import com.github.ltsopensource.queue.RepeatJobQueue;
+import com.github.ltsopensource.queue.SuspendJobQueue;
 
 /**
  * JobTracker Application
@@ -22,161 +33,192 @@ import com.github.ltsopensource.queue.*;
  */
 public class JobTrackerAppContext extends AppContext {
 
-    private RemotingServerDelegate remotingServer;
-    // channel manager
-    private ChannelManager channelManager;
-    // JobClient manager for job tracker
-    private JobClientManager jobClientManager;
-    // TaskTracker manager for job tracker
-    private TaskTrackerManager taskTrackerManager;
-    // dead job checker
-    private ExecutingDeadJobChecker executingDeadJobChecker;
-    private FeedbackJobSendChecker feedbackJobSendChecker;
-    private ExecutableDeadJobChecker executableDeadJobChecker;
+	private RemotingServerDelegate remotingServer;
+	// channel manager
+	private ChannelManager channelManager;
+	// JobClient manager for job tracker
+	private JobClientManager jobClientManager;
+	// TaskTracker manager for job tracker
+	private TaskTrackerManager taskTrackerManager;
+	// dead job checker
+	private ExecutingDeadJobChecker executingDeadJobChecker;
+	private FeedbackJobSendChecker feedbackJobSendChecker;
+	private ExecutableDeadJobChecker executableDeadJobChecker;
 
-    // old data handler, dirty data
-    private OldDataHandler oldDataHandler;
-    // biz logger
-    private JobLogger jobLogger;
+	// old data handler, dirty data
+	private OldDataHandler oldDataHandler;
+	// biz logger
+	private JobLogger jobLogger;
 
-    // executable job queue（waiting for exec）
-    private ExecutableJobQueue executableJobQueue;
-    // executing job queue
-    private ExecutingJobQueue executingJobQueue;
-    // store the connected node groups
-    private NodeGroupStore nodeGroupStore;
+	// executable job queue（waiting for exec）
+	private ExecutableJobQueue executableJobQueue;
+	// executing job queue
+	private ExecutingJobQueue executingJobQueue;
+	// store the connected node groups
+	private NodeGroupStore nodeGroupStore;
 
-    // Cron Job queue
-    private CronJobQueue cronJobQueue;
-    // feedback queue
-    private JobFeedbackQueue jobFeedbackQueue;
+	// Cron Job queue
+	private CronJobQueue cronJobQueue;
+	// feedback queue
+	private JobFeedbackQueue jobFeedbackQueue;
 	private SuspendJobQueue suspendJobQueue;
-    private RepeatJobQueue repeatJobQueue;
-    private PreLoader preLoader;
-    private JobReceiver jobReceiver;
-    private JobSender jobSender;
+	private RepeatJobQueue repeatJobQueue;
+	private PreLoader preLoader;
+	private JobReceiver jobReceiver;
+	private JobSender jobSender;
 
-    private NonRelyOnPrevCycleJobScheduler nonRelyOnPrevCycleJobScheduler;
+	private NonRelyOnPrevCycleJobScheduler nonRelyOnPrevCycleJobScheduler;
 
-    public JobSender getJobSender() {
-        return jobSender;
-    }
+	private JobGrayFlag jobGrayFlag;
 
-    public void setJobSender(JobSender jobSender) {
-        this.jobSender = jobSender;
-    }
+	private ExecutableJobDependency executableJobDependency;
+	
+	//JobPusher's AsyncPusher
+	private ExecutorService pushExecutorService;
 
-    public JobReceiver getJobReceiver() {
-        return jobReceiver;
-    }
+	public ExecutorService getPushExecutorService() {
+		return pushExecutorService;
+	}
 
-    public void setJobReceiver(JobReceiver jobReceiver) {
-        this.jobReceiver = jobReceiver;
-    }
+	public void setPushExecutorService(ExecutorService pushExecutorService) {
+		this.pushExecutorService = pushExecutorService;
+	}
 
-    public PreLoader getPreLoader() {
-        return preLoader;
-    }
+	public ExecutableJobDependency getExecutableJobDependency() {
+		return executableJobDependency;
+	}
 
-    public void setPreLoader(PreLoader preLoader) {
-        this.preLoader = preLoader;
-    }
+	public void setExecutableJobDependency(ExecutableJobDependency executableJobDependency) {
+		this.executableJobDependency = executableJobDependency;
+	}
 
-    public JobLogger getJobLogger() {
-        return jobLogger;
-    }
+	public JobGrayFlag getJobGrayFlag() {
+		return jobGrayFlag;
+	}
 
-    public void setJobLogger(JobLogger jobLogger) {
-        this.jobLogger = jobLogger;
-    }
+	public void setJobGrayFlag(JobGrayFlag jobGrayFlag) {
+		this.jobGrayFlag = jobGrayFlag;
+	}
 
-    public JobFeedbackQueue getJobFeedbackQueue() {
-        return jobFeedbackQueue;
-    }
+	public JobSender getJobSender() {
+		return jobSender;
+	}
 
-    public void setJobFeedbackQueue(JobFeedbackQueue jobFeedbackQueue) {
-        this.jobFeedbackQueue = jobFeedbackQueue;
-    }
+	public void setJobSender(JobSender jobSender) {
+		this.jobSender = jobSender;
+	}
 
-    public RemotingServerDelegate getRemotingServer() {
-        return remotingServer;
-    }
+	public JobReceiver getJobReceiver() {
+		return jobReceiver;
+	}
 
-    public void setRemotingServer(RemotingServerDelegate remotingServer) {
-        this.remotingServer = remotingServer;
-    }
+	public void setJobReceiver(JobReceiver jobReceiver) {
+		this.jobReceiver = jobReceiver;
+	}
 
-    public ChannelManager getChannelManager() {
-        return channelManager;
-    }
+	public PreLoader getPreLoader() {
+		return preLoader;
+	}
 
-    public void setChannelManager(ChannelManager channelManager) {
-        this.channelManager = channelManager;
-    }
+	public void setPreLoader(PreLoader preLoader) {
+		this.preLoader = preLoader;
+	}
 
-    public JobClientManager getJobClientManager() {
-        return jobClientManager;
-    }
+	public JobLogger getJobLogger() {
+		return jobLogger;
+	}
 
-    public void setJobClientManager(JobClientManager jobClientManager) {
-        this.jobClientManager = jobClientManager;
-    }
+	public void setJobLogger(JobLogger jobLogger) {
+		this.jobLogger = jobLogger;
+	}
 
-    public TaskTrackerManager getTaskTrackerManager() {
-        return taskTrackerManager;
-    }
+	public JobFeedbackQueue getJobFeedbackQueue() {
+		return jobFeedbackQueue;
+	}
 
-    public void setTaskTrackerManager(TaskTrackerManager taskTrackerManager) {
-        this.taskTrackerManager = taskTrackerManager;
-    }
+	public void setJobFeedbackQueue(JobFeedbackQueue jobFeedbackQueue) {
+		this.jobFeedbackQueue = jobFeedbackQueue;
+	}
 
-    public ExecutingDeadJobChecker getExecutingDeadJobChecker() {
-        return executingDeadJobChecker;
-    }
+	public RemotingServerDelegate getRemotingServer() {
+		return remotingServer;
+	}
 
-    public void setExecutingDeadJobChecker(ExecutingDeadJobChecker executingDeadJobChecker) {
-        this.executingDeadJobChecker = executingDeadJobChecker;
-    }
+	public void setRemotingServer(RemotingServerDelegate remotingServer) {
+		this.remotingServer = remotingServer;
+	}
 
-    public OldDataHandler getOldDataHandler() {
-        return oldDataHandler;
-    }
+	public ChannelManager getChannelManager() {
+		return channelManager;
+	}
 
-    public void setOldDataHandler(OldDataHandler oldDataHandler) {
-        this.oldDataHandler = oldDataHandler;
-    }
+	public void setChannelManager(ChannelManager channelManager) {
+		this.channelManager = channelManager;
+	}
 
-    public CronJobQueue getCronJobQueue() {
-        return cronJobQueue;
-    }
+	public JobClientManager getJobClientManager() {
+		return jobClientManager;
+	}
 
-    public void setCronJobQueue(CronJobQueue cronJobQueue) {
-        this.cronJobQueue = cronJobQueue;
-    }
+	public void setJobClientManager(JobClientManager jobClientManager) {
+		this.jobClientManager = jobClientManager;
+	}
 
-    public ExecutableJobQueue getExecutableJobQueue() {
-        return executableJobQueue;
-    }
+	public TaskTrackerManager getTaskTrackerManager() {
+		return taskTrackerManager;
+	}
 
-    public void setExecutableJobQueue(ExecutableJobQueue executableJobQueue) {
-        this.executableJobQueue = executableJobQueue;
-    }
+	public void setTaskTrackerManager(TaskTrackerManager taskTrackerManager) {
+		this.taskTrackerManager = taskTrackerManager;
+	}
 
-    public ExecutingJobQueue getExecutingJobQueue() {
-        return executingJobQueue;
-    }
+	public ExecutingDeadJobChecker getExecutingDeadJobChecker() {
+		return executingDeadJobChecker;
+	}
 
-    public void setExecutingJobQueue(ExecutingJobQueue executingJobQueue) {
-        this.executingJobQueue = executingJobQueue;
-    }
+	public void setExecutingDeadJobChecker(ExecutingDeadJobChecker executingDeadJobChecker) {
+		this.executingDeadJobChecker = executingDeadJobChecker;
+	}
 
-    public NodeGroupStore getNodeGroupStore() {
-        return nodeGroupStore;
-    }
+	public OldDataHandler getOldDataHandler() {
+		return oldDataHandler;
+	}
 
-    public void setNodeGroupStore(NodeGroupStore nodeGroupStore) {
-        this.nodeGroupStore = nodeGroupStore;
-    }
+	public void setOldDataHandler(OldDataHandler oldDataHandler) {
+		this.oldDataHandler = oldDataHandler;
+	}
+
+	public CronJobQueue getCronJobQueue() {
+		return cronJobQueue;
+	}
+
+	public void setCronJobQueue(CronJobQueue cronJobQueue) {
+		this.cronJobQueue = cronJobQueue;
+	}
+
+	public ExecutableJobQueue getExecutableJobQueue() {
+		return executableJobQueue;
+	}
+
+	public void setExecutableJobQueue(ExecutableJobQueue executableJobQueue) {
+		this.executableJobQueue = executableJobQueue;
+	}
+
+	public ExecutingJobQueue getExecutingJobQueue() {
+		return executingJobQueue;
+	}
+
+	public void setExecutingJobQueue(ExecutingJobQueue executingJobQueue) {
+		this.executingJobQueue = executingJobQueue;
+	}
+
+	public NodeGroupStore getNodeGroupStore() {
+		return nodeGroupStore;
+	}
+
+	public void setNodeGroupStore(NodeGroupStore nodeGroupStore) {
+		this.nodeGroupStore = nodeGroupStore;
+	}
 
 	public SuspendJobQueue getSuspendJobQueue() {
 		return suspendJobQueue;
@@ -186,35 +228,35 @@ public class JobTrackerAppContext extends AppContext {
 		this.suspendJobQueue = suspendJobQueue;
 	}
 
-    public RepeatJobQueue getRepeatJobQueue() {
-        return repeatJobQueue;
-    }
+	public RepeatJobQueue getRepeatJobQueue() {
+		return repeatJobQueue;
+	}
 
-    public void setRepeatJobQueue(RepeatJobQueue repeatJobQueue) {
-        this.repeatJobQueue = repeatJobQueue;
-    }
+	public void setRepeatJobQueue(RepeatJobQueue repeatJobQueue) {
+		this.repeatJobQueue = repeatJobQueue;
+	}
 
-    public NonRelyOnPrevCycleJobScheduler getNonRelyOnPrevCycleJobScheduler() {
-        return nonRelyOnPrevCycleJobScheduler;
-    }
+	public NonRelyOnPrevCycleJobScheduler getNonRelyOnPrevCycleJobScheduler() {
+		return nonRelyOnPrevCycleJobScheduler;
+	}
 
-    public void setNonRelyOnPrevCycleJobScheduler(NonRelyOnPrevCycleJobScheduler nonRelyOnPrevCycleJobScheduler) {
-        this.nonRelyOnPrevCycleJobScheduler = nonRelyOnPrevCycleJobScheduler;
-    }
+	public void setNonRelyOnPrevCycleJobScheduler(NonRelyOnPrevCycleJobScheduler nonRelyOnPrevCycleJobScheduler) {
+		this.nonRelyOnPrevCycleJobScheduler = nonRelyOnPrevCycleJobScheduler;
+	}
 
-    public FeedbackJobSendChecker getFeedbackJobSendChecker() {
-        return feedbackJobSendChecker;
-    }
+	public FeedbackJobSendChecker getFeedbackJobSendChecker() {
+		return feedbackJobSendChecker;
+	}
 
-    public void setFeedbackJobSendChecker(FeedbackJobSendChecker feedbackJobSendChecker) {
-        this.feedbackJobSendChecker = feedbackJobSendChecker;
-    }
+	public void setFeedbackJobSendChecker(FeedbackJobSendChecker feedbackJobSendChecker) {
+		this.feedbackJobSendChecker = feedbackJobSendChecker;
+	}
 
-    public ExecutableDeadJobChecker getExecutableDeadJobChecker() {
-        return executableDeadJobChecker;
-    }
+	public ExecutableDeadJobChecker getExecutableDeadJobChecker() {
+		return executableDeadJobChecker;
+	}
 
-    public void setExecutableDeadJobChecker(ExecutableDeadJobChecker executableDeadJobChecker) {
-        this.executableDeadJobChecker = executableDeadJobChecker;
-    }
+	public void setExecutableDeadJobChecker(ExecutableDeadJobChecker executableDeadJobChecker) {
+		this.executableDeadJobChecker = executableDeadJobChecker;
+	}
 }

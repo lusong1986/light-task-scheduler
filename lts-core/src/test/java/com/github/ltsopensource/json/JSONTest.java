@@ -1,13 +1,16 @@
 package com.github.ltsopensource.json;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+
 import com.github.ltsopensource.core.domain.Action;
 import com.github.ltsopensource.core.domain.Job;
 import com.github.ltsopensource.core.domain.JobRunResult;
 import com.github.ltsopensource.core.json.TypeReference;
-import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Robert HG (254963746@qq.com) on 12/29/15.
@@ -48,12 +51,14 @@ public class JSONTest {
 
     @Test
     public void testArray(){
-        byte[] b = new byte[]{
+        Byte[] b = new Byte[]{
                 1,2,
                 3,3
         };
-
-        String json = new JSONArray(b).toString();
+        
+        List<Byte> list = Arrays.asList(b);
+        
+        String json = new JSONArray(list).toString();
         System.out.println(json);
 
         byte[] b2 = JSONObject.parseObject(json, new TypeReference<byte[]>() {
@@ -109,7 +114,7 @@ public class JSONTest {
 
     @Test
     public void ltsjsonParseTest(){
-        String json = "{\"needFeedback\":false,\"schedule\":true,\"extParams\":{\"xxx\":\"fadsfads\"},\"replaceOnExist\":false,\"priority\":100,\"cronExpression\":\"xcvxcvxfadsf\",\"retryTimes\":0}";
+        String json = "{\"needFeedback\":false,\"schedule\":true,\"relyOnPrevCycle\":true,\"extParams\":{\"xxx\":\"fadsfads\"},\"replaceOnExist\":false,\"priority\":100,\"cronExpression\":\"xcvxcvxfadsf\",\"retryTimes\":0,\"maxRetryTimes\":0,\"repeatCount\":0}";
         long start = System.currentTimeMillis();
 
         for (int i = 0; i < 1000000; i++) {

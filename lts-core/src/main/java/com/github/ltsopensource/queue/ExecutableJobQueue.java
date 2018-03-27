@@ -1,8 +1,8 @@
 package com.github.ltsopensource.queue;
 
-import com.github.ltsopensource.queue.domain.JobPo;
-
 import java.util.List;
+
+import com.github.ltsopensource.queue.domain.JobPo;
 
 /**
  * 等待执行的任务队列 (可以有多个)
@@ -11,42 +11,42 @@ import java.util.List;
  */
 public interface ExecutableJobQueue extends JobQueue {
 
-    /**
-     * 创建一个队列
-     */
-    boolean createQueue(String taskTrackerNodeGroup);
+	/**
+	 * 创建一个队列
+	 */
+	boolean createQueue(String taskTrackerNodeGroup);
 
-    /**
-     * 删除
-     */
-    boolean removeQueue(String taskTrackerNodeGroup);
+	/**
+	 * 删除
+	 */
+	boolean removeQueue(String taskTrackerNodeGroup);
 
-    /**
-     * 入队列
-     */
-    boolean add(JobPo jobPo);
+	/**
+	 * 入队列
+	 */
+	boolean add(JobPo jobPo);
 
-    /**
-     * 出队列
-     */
-    boolean remove(String taskTrackerNodeGroup, String jobId);
+	/**
+	 * 出队列
+	 */
+	boolean remove(String taskTrackerNodeGroup, String jobId);
 
-    long countJob(String realTaskId, String taskTrackerNodeGroup);
+	long countJob(String realTaskId, String taskTrackerNodeGroup);
 
-    boolean removeBatch(String realTaskId, String taskTrackerNodeGroup);
+	boolean removeBatch(String realTaskId, String taskTrackerNodeGroup);
 
-    /**
-     * reset , runnable
-     */
-    void resume(JobPo jobPo);
+	/**
+	 * reset , runnable
+	 */
+	void resume(JobPo jobPo);
 
-    /**
-     * 得到死任务
-     */
-    List<JobPo> getDeadJob(String taskTrackerNodeGroup, long deadline);
+	/**
+	 * 得到死任务
+	 */
+	List<JobPo> getDeadJob(String taskTrackerNodeGroup, long deadline);
 
-    /**
-     * 得到JobPo
-     */
-    JobPo getJob(String taskTrackerNodeGroup, String taskId);
+	/**
+	 * 得到JobPo
+	 */
+	JobPo getJob(String taskTrackerNodeGroup, String taskId);
 }

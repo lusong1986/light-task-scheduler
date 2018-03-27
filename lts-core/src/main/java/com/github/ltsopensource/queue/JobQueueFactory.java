@@ -2,8 +2,8 @@ package com.github.ltsopensource.queue;
 
 import com.github.ltsopensource.core.AppContext;
 import com.github.ltsopensource.core.cluster.Config;
-import com.github.ltsopensource.core.spi.SPI;
 import com.github.ltsopensource.core.constant.ExtConfig;
+import com.github.ltsopensource.core.spi.SPI;
 
 /**
  * @author Robert HG (254963746@qq.com) on 3/12/16.
@@ -11,20 +11,23 @@ import com.github.ltsopensource.core.constant.ExtConfig;
 @SPI(key = ExtConfig.JOB_QUEUE, dftValue = "mysql")
 public interface JobQueueFactory {
 
-    CronJobQueue getCronJobQueue(Config config);
+	CronJobQueue getCronJobQueue(Config config);
 
-    RepeatJobQueue getRepeatJobQueue(Config config);
+	RepeatJobQueue getRepeatJobQueue(Config config);
 
-    ExecutableJobQueue getExecutableJobQueue(Config config);
+	ExecutableJobQueue getExecutableJobQueue(Config config);
 
-    ExecutingJobQueue getExecutingJobQueue(Config config);
+	ExecutingJobQueue getExecutingJobQueue(Config config);
 
-    JobFeedbackQueue getJobFeedbackQueue(Config config);
+	JobFeedbackQueue getJobFeedbackQueue(Config config);
 
-    NodeGroupStore getNodeGroupStore(Config config);
+	NodeGroupStore getNodeGroupStore(Config config);
 
-    SuspendJobQueue getSuspendJobQueue(Config config);
+	SuspendJobQueue getSuspendJobQueue(Config config);
 
-    PreLoader getPreLoader(AppContext appContext);
+	PreLoader getPreLoader(AppContext appContext);
+	
+	JobGrayFlag getJobGrayFlag(Config config);
+	
+	ExecutableJobDependency getExecutableJobDependency(Config config);
 }
-

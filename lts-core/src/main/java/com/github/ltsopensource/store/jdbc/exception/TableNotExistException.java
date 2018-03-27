@@ -5,19 +5,21 @@ package com.github.ltsopensource.store.jdbc.exception;
  */
 public class TableNotExistException extends JdbcException {
 
-    public TableNotExistException() {
-        super();
-    }
+	private static final long serialVersionUID = 3918944819504111919L;
 
-    public TableNotExistException(String message) {
-        super(message);
-    }
+	public TableNotExistException() {
+		super();
+	}
 
-    public TableNotExistException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	public TableNotExistException(String message) {
+		super(message);
+	}
 
-    public TableNotExistException(Throwable cause) {
-        super(cause);
-    }
+	public TableNotExistException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public TableNotExistException(Throwable cause) {
+		super(cause);
+	}
 }

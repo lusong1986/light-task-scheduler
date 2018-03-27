@@ -5,7 +5,7 @@
     <parent>
         <artifactId>lts-parent</artifactId>
         <groupId>com.github.ltsopensource</groupId>
-        <version>1.7.1-SNAPSHOT</version>
+        <version>1.7.0.2</version>
     </parent>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
@@ -21,11 +21,6 @@
         <dependency>
             <groupId>com.github.ltsopensource</groupId>
             <artifactId>lts-tasktracker</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.ltsopensource</groupId>
-            <artifactId>lts-jobtracker</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -260,7 +255,6 @@
                                     <include>com.github.ltsopensource:lts-core</include>
                                     <include>com.github.ltsopensource:lts-jobclient</include>
                                     <include>com.github.ltsopensource:lts-tasktracker</include>
-                                    <include>com.github.ltsopensource:lts-jobtracker</include>
                                     <include>com.github.ltsopensource:lts-spring</include>
                                     <include>com.github.ltsopensource:lts-monitor</include>
                                 </includes>

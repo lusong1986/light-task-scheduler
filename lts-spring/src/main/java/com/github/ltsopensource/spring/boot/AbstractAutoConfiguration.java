@@ -1,5 +1,13 @@
 package com.github.ltsopensource.spring.boot;
 
+import java.util.Map;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 import com.github.ltsopensource.core.cluster.AbstractJobNode;
 import com.github.ltsopensource.core.cluster.NodeType;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
@@ -7,13 +15,6 @@ import com.github.ltsopensource.core.listener.MasterChangeListener;
 import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.core.logger.LoggerFactory;
 import com.github.ltsopensource.spring.boot.annotation.MasterNodeListener;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-
-import java.util.Map;
 
 /**
  * @author Robert HG (254963746@qq.com) on 4/9/16.
@@ -76,5 +77,5 @@ public abstract class AbstractAutoConfiguration implements ApplicationContextAwa
 
     protected abstract NodeType nodeType();
 
-    protected abstract AbstractJobNode getJobNode();
+    protected abstract AbstractJobNode<?, ?> getJobNode();
 }

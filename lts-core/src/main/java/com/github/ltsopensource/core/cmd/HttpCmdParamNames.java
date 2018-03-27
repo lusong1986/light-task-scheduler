@@ -5,7 +5,7 @@ package com.github.ltsopensource.core.cmd;
  */
 public interface HttpCmdParamNames {
 
-    String M_NODE = "mNode";
+	String M_NODE = "mNode";
 
-    String M_DATA = "mData";
+	String M_DATA = "mData";
 }

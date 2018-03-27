@@ -9,6 +9,7 @@ import com.github.ltsopensource.core.support.SystemClock;
 import com.github.ltsopensource.queue.JobQueue;
 import com.github.ltsopensource.queue.domain.JobPo;
 import com.github.ltsopensource.store.mongo.MongoRepository;
+
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
 import org.mongodb.morphia.query.UpdateResults;
@@ -25,7 +26,8 @@ public abstract class AbstractMongoJobQueue extends MongoRepository implements J
         super(config);
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public PaginationRsp<JobPo> pageSelect(JobQueueReq request) {
         Query<JobPo> query = template.createQuery(getTargetTable(request.getTaskTrackerNodeGroup()), JobPo.class);
         addCondition(query, "jobId", request.getJobId());

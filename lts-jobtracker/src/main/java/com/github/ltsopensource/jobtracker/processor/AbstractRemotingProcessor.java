@@ -8,10 +8,10 @@ import com.github.ltsopensource.remoting.RemotingProcessor;
  */
 public abstract class AbstractRemotingProcessor implements RemotingProcessor {
 
-    protected JobTrackerAppContext appContext;
+	protected JobTrackerAppContext appContext;
 
-    public AbstractRemotingProcessor(JobTrackerAppContext appContext) {
-        this.appContext = appContext;
-    }
+	public AbstractRemotingProcessor(JobTrackerAppContext appContext) {
+		this.appContext = appContext;
+	}
 
 }

@@ -1,5 +1,13 @@
 package com.github.ltsopensource.spring.quartz;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.quartz.impl.triggers.CronTriggerImpl;
+import org.quartz.impl.triggers.SimpleTriggerImpl;
+
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
 import com.github.ltsopensource.core.commons.utils.QuietUtils;
 import com.github.ltsopensource.core.domain.Job;
@@ -7,21 +15,16 @@ import com.github.ltsopensource.core.factory.NamedThreadFactory;
 import com.github.ltsopensource.core.json.JSON;
 import com.github.ltsopensource.core.logger.Logger;
 import com.github.ltsopensource.core.logger.LoggerFactory;
+import com.github.ltsopensource.core.properties.JobClientProperties;
 import com.github.ltsopensource.jobclient.JobClient;
 import com.github.ltsopensource.jobclient.JobClientBuilder;
-import com.github.ltsopensource.core.properties.JobClientProperties;
+import com.github.ltsopensource.jobclient.domain.JobClientAppContext;
+import com.github.ltsopensource.jobclient.domain.JobClientNode;
 import com.github.ltsopensource.jobclient.domain.Response;
 import com.github.ltsopensource.tasktracker.TaskTracker;
 import com.github.ltsopensource.tasktracker.TaskTrackerBuilder;
 import com.github.ltsopensource.tasktracker.runner.JobRunner;
 import com.github.ltsopensource.tasktracker.runner.RunnerFactory;
-import org.quartz.impl.triggers.CronTriggerImpl;
-import org.quartz.impl.triggers.SimpleTriggerImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Robert HG (254963746@qq.com) on 3/16/16.
@@ -66,7 +69,7 @@ class QuartzLTSProxyAgent {
         startTaskTracker();
 
         // 2. 启动JobClient并提交任务
-        JobClient jobClient = startJobClient();
+        JobClient<JobClientNode, JobClientAppContext> jobClient = startJobClient();
 
         // 3. 提交任务
         submitJobs(jobClient);
@@ -89,15 +92,15 @@ class QuartzLTSProxyAgent {
         taskTracker.start();
     }
 
-    private JobClient startJobClient() {
+    private JobClient<JobClientNode, JobClientAppContext> startJobClient() {
         JobClientProperties jobClientProperties = quartzLTSConfig.getJobClientProperties();
         jobClientProperties.setUseRetryClient(false);
-        JobClient jobClient = JobClientBuilder.buildByProperties(jobClientProperties);
+        JobClient<JobClientNode, JobClientAppContext> jobClient = JobClientBuilder.buildByProperties(jobClientProperties);
         jobClient.start();
         return jobClient;
     }
 
-    private void submitJobs(JobClient jobClient) {
+    private void submitJobs(JobClient<JobClientNode, JobClientAppContext> jobClient) {
 
         List<Job> jobs = new ArrayList<Job>(quartzJobContexts.size());
         for (QuartzJobContext quartzJobContext : quartzJobContexts) {
@@ -180,7 +183,7 @@ class QuartzLTSProxyAgent {
         }
     }
 
-    private void submitJobs0(JobClient jobClient, List<Job> jobs) {
+    private void submitJobs0(JobClient<JobClientNode, JobClientAppContext> jobClient, List<Job> jobs) {
         List<Job> failedJobs = null;
         try {
             Response response = jobClient.submitJob(jobs);

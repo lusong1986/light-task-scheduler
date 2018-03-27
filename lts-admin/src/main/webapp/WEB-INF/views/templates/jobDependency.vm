@@ -1,0 +1,317 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>Job依赖</h2>
+        <ol class="breadcrumb">
+            <li><a>任务队列管理</a></li>
+            <li class="active"><b>Job依赖</b></li>
+        </ol>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3><span class="text-navy">Job依赖</span></h3>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" id="form" class="form-horizontal" onsubmit="return false">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" style="width:10%">Job ID</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="jobId"
+                                       placeholder="请输入Job ID（JobId）">
+                            </div>
+
+                            <label class="col-sm-2 control-label" style="width:10%">父Job ID</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="parentJobId"
+                                       placeholder="请输入父Job ID（ParentJobId）">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" style="width:10%">执行节点组</label>
+
+                            <div class="col-sm-3">
+                                <select name="taskTrackerNodeGroup" class="form-control">
+                                    <option value="">-- 不限 --</option>
+                                    #foreach($nodeGroup in $taskTrackerNodeGroups)
+                                        <option value="$nodeGroup.name">$nodeGroup.name</option>
+                                    #end
+                                </select>
+                            </div>
+                            
+                            <div class="col-sm-1" style="width:70px;">
+                                <button class="btn btn-primary" type="button" id="searchBtn">
+                                    搜索
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-warning" type="reset" id="resetBtn">
+                                    重置
+                                </button>
+                            </div>
+                            <div class="col-sm-1" style="width:70px;">
+                                <button class="btn btn-primary" type="button" id="addBtn">
+                                    添加
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content" id="ltstableContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal inmodal" id="job-edit-modal" role="dialog" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" style="width: 600px;">
+        <div class="modal-content animated rubberBand">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span
+                        class="sr-only">关闭</span></button>
+                <h2 class="modal-title">添加Job依赖</h2>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <form method="post" id="editForm" class="form-horizontal" onsubmit="return false">
+						<div class="form-group">
+                            <label class="col-sm-2 control-label w_120">Job ID</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control w_250" name="jobId"
+                                       placeholder="请输入Job ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label w_120">父Job ID</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control w_250" name="parentJobId"
+                                       placeholder="请输入父Job ID">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label w_120">执行节点组</label>
+
+                            <div class="col-sm-3 w_250">
+                                <select name="taskTrackerNodeGroup" class="form-control">
+                                    <option value="">-- 请选择执行节点组 --</option>
+                                    #foreach($nodeGroup in $taskTrackerNodeGroups)
+                                        <option value="$nodeGroup.name">$nodeGroup.name</option>
+                                    #end
+                                </select>
+                            </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                        <div class="form-group">
+                            <div class="col-sm-1 col-sm-offset-3" style="width:70px;">
+                                <button class="btn btn-primary" type="button" id="editBtn">
+                                    添加
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-warning" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ltstable" type="text/html">
+    <table class="table table-stripped toggle-arrow-tiny footable" data-page-size="10">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th data-toggle="true">Job ID</th>
+            <th>Task ID</th>
+            <th>父Job ID</th>
+            <th>父Task ID</th>
+            <th>执行节点组</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{each rows as row index}}
+        <tr>
+        	<td>{{row.id}}</td>
+            <td>{{row.jobId}}</td>
+            <td>{{row.taskId}}</td>
+            <td>{{row.parentJobId}}</td>
+            <td>{{row.parentTaskId}}</td>
+            <td>{{row.taskTrackerNodeGroup}}</td>
+            <td>{{row.opt | format:'optFormat',row}}</td>
+        </tr>
+        {{/each}}
+        {{if results == 0}}
+        <tr>
+            <td colspan="15">暂无数据</td>
+        </tr>
+        {{/if}}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="9">
+                <span>共{{results}}条记录，每页展示{{pageSize}}条</span>
+                <ul class="pagination-sm pull-right"></ul>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        LTS.colFormatter.optFormat = function (v, row) {
+            return '<a href="javascript:;" class="job-del-btn" id="' + row['id'] + '"><span class="label label-primary" style="background-color: #DD6B55;"><i class="fa fa-trash-o"></i> 删除</span></a>';
+        }
+
+        $(document).on("click", ".job-del-btn", function () {
+            var that = $(this);
+
+            var id = that.attr("id");
+
+            swal({
+                title: "确认要删除该依赖吗？",
+                text: "删除依赖可能会造成Job无法正常运行，请谨慎操作 !",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认删除",
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if(isConfirm){
+                    $.ajax({
+                        url: 'api/job-queue/job-dependency-delete',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: id},
+                        success: function (json) {
+                            if (json && json.success) {
+                                swal("删除成功!", "恭喜你", "success");
+                                that.parents("tr").remove();
+                            } else {
+                                json ? swal(json['msg']) : {};
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on("click", "#addBtn", function () {
+            $("#job-edit-modal").modal("show");
+        });
+
+        $(document).on("click", "#editBtn", function () {
+            var params = {};
+            $.each($('#editForm').parent().find(".form-control"), function () {
+                var name = $(this).attr("name");
+                var value = $(this).val();
+                params[name] = value;
+            });
+
+            var jobId = params['jobId'];
+            if (!jobId) {
+                sweetAlert("请输入Job ID", "", "error");
+                return;
+            }
+            var parentJobId = params['parentJobId'];
+            if (!parentJobId) {
+                sweetAlert("请输入父Job ID", "", "error");
+                return;
+            }
+            if (!params['taskTrackerNodeGroup']) {
+                sweetAlert("请选择执行节点组", "如果列表中没有，请在节点组管理中添加，并启动该节点。", "error");
+                return;
+            }
+            // 请求修改数据
+            $.ajax({
+                url: 'api/job-queue/job-dependency-add',
+                type: 'POST',
+                dataType: 'json',
+                data: params,
+                success: function (json) {
+                    if (json && json.success) {
+                        swal("添加成功", "恭喜你", "success");
+                        $("#form")[0].reset();
+                        $("#form").find('select').selectpicker('render');
+                        $("#editForm")[0].reset();
+                        $("#editForm").find('select').selectpicker('render');
+                        $("#job-edit-modal").modal("hide");
+                        $("#searchBtn").trigger("click");
+                    } else {
+                        json ? swal(json['msg']) : {};
+                    }
+                }
+            });
+        });
+
+        $(document).on("click", ".job-cancel-btn", function () {
+            var that = $(this);
+
+            var id = that.attr("id");
+
+            swal({
+                title: "确认要取消依赖吗？",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确认取消",
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if(isConfirm){
+                    $.ajax({
+                        url: 'api/job-queue/job-dependency-cancel',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {id: id},
+                        success: function (json) {
+                            if (json && json.success) {
+                                swal("取消成功!", "恭喜你", "success");
+                                $("#form")[0].reset();
+		                        $("#form").find('select').selectpicker('render');
+		                        $("#searchBtn").trigger("click");
+                            } else {
+                                json ? swal(json['msg']) : {};
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        var ltsTable = $("#ltstableContainer").ltsTable({
+            url: 'api/job-queue/job-dependency-get',
+            templateId: 'ltstable'
+        });
+
+        $(document).on("click", "#searchBtn", function () {
+            var params = {};
+            $.each($('#form').parent().find(".form-control"), function () {
+                var name = $(this).attr("name");
+                var value = $(this).val();
+                params[name] = value;
+            });
+            ltsTable.post(params, 1);
+        });
+        $("#searchBtn").trigger("click");
+    });
+</script>

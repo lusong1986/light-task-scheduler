@@ -1,15 +1,14 @@
 package com.github.ltsopensource.autoconfigure.resolver;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.github.ltsopensource.autoconfigure.AutoConfigContext;
 import com.github.ltsopensource.autoconfigure.PropertiesConfigurationResolveException;
 import com.github.ltsopensource.core.commons.utils.PrimitiveTypeUtils;
 import com.github.ltsopensource.core.json.JSON;
-
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author Robert HG (254963746@qq.com) on 4/20/16.
@@ -18,9 +17,9 @@ public class ArrayResolver extends AbstractResolver {
 
     public static final ArrayResolver INSTANCE = new ArrayResolver();
 
-    @Override
+    @SuppressWarnings("rawtypes")
+	@Override
     public void resolve(AutoConfigContext context, PropertyDescriptor descriptor, Class<?> propertyType) {
-        Type componentType = propertyType.getComponentType();
         Class componentClass = propertyType.getComponentType();
 
         final Map<String, String> kvMap = new HashMap<String, String>();

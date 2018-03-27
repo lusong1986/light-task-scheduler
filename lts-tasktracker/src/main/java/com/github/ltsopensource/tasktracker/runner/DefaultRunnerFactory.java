@@ -9,21 +9,21 @@ import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
  */
 public class DefaultRunnerFactory implements RunnerFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RunnerFactory.class);
-    private TaskTrackerAppContext appContext;
+	private static final Logger LOGGER = LoggerFactory.getLogger(RunnerFactory.class);
+	private TaskTrackerAppContext appContext;
 
-    public DefaultRunnerFactory(TaskTrackerAppContext appContext) {
-        this.appContext = appContext;
-    }
+	public DefaultRunnerFactory(TaskTrackerAppContext appContext) {
+		this.appContext = appContext;
+	}
 
-    public JobRunner newRunner() {
-        try {
-            return (JobRunner) appContext.getJobRunnerClass().newInstance();
-        } catch (InstantiationException e) {
-            LOGGER.error(e.getMessage(), e);
-        } catch (IllegalAccessException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-        return null;
-    }
+	public JobRunner newRunner() {
+		try {
+			return (JobRunner) appContext.getJobRunnerClass().newInstance();
+		} catch (InstantiationException e) {
+			LOGGER.error(e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			LOGGER.error(e.getMessage(), e);
+		}
+		return null;
+	}
 }

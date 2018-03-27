@@ -5,6 +5,6 @@ package com.github.ltsopensource.core.cluster;
  */
 public interface NodeBuilder<T> {
 
-    T build();
+	T build();
 
 }

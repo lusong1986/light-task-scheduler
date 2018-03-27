@@ -5,9 +5,6 @@ package com.github.ltsopensource.core.domain;
  */
 public enum JobType {
 
-    REAL_TIME,
-    TRIGGER_TIME,
-    CRON,
-    REPEAT
+	REAL_TIME, TRIGGER_TIME, CRON, REPEAT
 
 }

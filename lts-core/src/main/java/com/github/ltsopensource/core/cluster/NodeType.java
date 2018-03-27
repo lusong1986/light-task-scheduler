@@ -7,21 +7,21 @@ import com.github.ltsopensource.core.commons.utils.StringUtils;
  */
 public enum NodeType {
 
-    // job tracker
-    JOB_TRACKER,
-    // task tracker
-    TASK_TRACKER,
-    // client
-    JOB_CLIENT,
-    // monitor
-    MONITOR,
+	// job tracker
+	JOB_TRACKER,
+	// task tracker
+	TASK_TRACKER,
+	// client
+	JOB_CLIENT,
+	// monitor
+	MONITOR,
 
-    BACKEND;
+	BACKEND;
 
-    public static NodeType convert(String value) {
-        if (StringUtils.isEmpty(value)) {
-            return null;
-        }
-        return NodeType.valueOf(value);
-    }
+	public static NodeType convert(String value) {
+		if (StringUtils.isEmpty(value)) {
+			return null;
+		}
+		return NodeType.valueOf(value);
+	}
 }

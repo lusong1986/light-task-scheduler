@@ -8,46 +8,52 @@ import com.github.ltsopensource.core.domain.JobMeta;
  */
 public class Response {
 
-    private Action action;
+	private static final int MSG_MAX_LENGTH = 10 * 1024;
 
-    private String msg;
+	private Action action;
 
-    private JobMeta jobMeta;
+	private String msg;
 
-    /**
-     * 是否接收新任务
-     */
-    private boolean receiveNewJob = true;
+	private JobMeta jobMeta;
 
-    public String getMsg() {
-        return msg;
-    }
+	/**
+	 * 是否接收新任务
+	 */
+	private boolean receiveNewJob = true;
 
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
+	public String getMsg() {
+		return msg;
+	}
 
-    public JobMeta getJobMeta() {
-        return jobMeta;
-    }
+	public void setMsg(String msg) {
+		if (msg != null && msg.length() > MSG_MAX_LENGTH) {
+			this.msg = msg.substring(0, MSG_MAX_LENGTH);
+		} else {
+			this.msg = msg;
+		}
+	}
 
-    public void setJobMeta(JobMeta jobMeta) {
-        this.jobMeta = jobMeta;
-    }
+	public JobMeta getJobMeta() {
+		return jobMeta;
+	}
 
-    public boolean isReceiveNewJob() {
-        return receiveNewJob;
-    }
+	public void setJobMeta(JobMeta jobMeta) {
+		this.jobMeta = jobMeta;
+	}
 
-    public void setReceiveNewJob(boolean receiveNewJob) {
-        this.receiveNewJob = receiveNewJob;
-    }
+	public boolean isReceiveNewJob() {
+		return receiveNewJob;
+	}
 
-    public Action getAction() {
-        return action;
-    }
+	public void setReceiveNewJob(boolean receiveNewJob) {
+		this.receiveNewJob = receiveNewJob;
+	}
 
-    public void setAction(Action action) {
-        this.action = action;
-    }
+	public Action getAction() {
+		return action;
+	}
+
+	public void setAction(Action action) {
+		this.action = action;
+	}
 }

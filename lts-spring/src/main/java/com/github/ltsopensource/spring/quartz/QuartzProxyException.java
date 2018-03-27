@@ -5,7 +5,9 @@ package com.github.ltsopensource.spring.quartz;
  */
 public class QuartzProxyException extends RuntimeException {
 
-    public QuartzProxyException() {
+	private static final long serialVersionUID = -4964502486624228957L;
+
+	public QuartzProxyException() {
         super();
     }
 

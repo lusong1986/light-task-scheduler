@@ -24,7 +24,8 @@ public class FileUtils {
         return file;
     }
 
-    public static FileChannel newFileChannel(File file, String mode) throws FileNotFoundException {
+    @SuppressWarnings("resource")
+	public static FileChannel newFileChannel(File file, String mode) throws FileNotFoundException {
         return new RandomAccessFile(file, mode).getChannel();
     }
 

@@ -1,0 +1,121 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>Cron任务</h2>
+        <ol class="breadcrumb">
+            <li><a>任务队列管理</a></li>
+            <li class="active"><b>Job灰度</b></li>
+        </ol>
+    </div>
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <h3><span class="text-navy">Job灰度</span></h3>
+                </div>
+                <div class="ibox-content">
+                    <form method="post" id="form" class="form-horizontal" onsubmit="return false">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" style="width:10%">Task ID</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="taskId"
+                                       placeholder="请输入Task ID（TaskId）">
+                            </div>
+
+                            <label class="col-sm-2 control-label" style="width:10%">灰度</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" name="gray"
+                                       placeholder="请输入灰度（BLUE或者GREEN）">
+                            </div>
+                            
+                            <div class="col-sm-1" style="width:70px;">
+                                <button class="btn btn-primary" type="button" id="searchBtn">
+                                    搜索
+                                </button>
+                            </div>
+                            <div class="col-sm-1">
+                                <button class="btn btn-warning" type="reset" id="resetBtn">
+                                    重置
+                                </button>
+                            </div>      
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content" id="ltstableContainer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="ltstable" type="text/html">
+    <table class="table table-stripped toggle-arrow-tiny footable" data-page-size="10">
+        <thead>
+        <tr>
+            <th>编号</th>
+            <th data-toggle="true">Task ID</th>
+            <th>灰度</th>
+            <th>创建时间</th>
+            <th>修改时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{each rows as row index}}
+	        <tr>
+	        	<td>{{row.id}}</td>
+	            <td>{{row.taskId}}</td>
+	            <td>{{row.gray}}</td>
+	            <td>{{row.gmtCreated}}</td>
+	            <td>{{row.gmtModified}}</td>
+	        </tr>
+        {{/each}}
+        {{if results == 0}}
+        <tr>
+            <td colspan="15">暂无数据</td>
+        </tr>
+        {{/if}}
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="9">
+                <span>共{{results}}条记录，每页展示{{pageSize}}条</span>
+                <ul class="pagination-sm pull-right"></ul>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        var ltsTable = $("#ltstableContainer").ltsTable({
+            url: 'api/job-queue/job-gray-get',
+            templateId: 'ltstable'
+        });
+
+        $(document).on("click", "#searchBtn", function () {
+            var params = {};
+            $.each($('#form').parent().find(".form-control"), function () {
+                var name = $(this).attr("name");
+                var value = $(this).val();
+                params[name] = value;
+            });
+            ltsTable.post(params, 1);
+        });
+        $("#searchBtn").trigger("click");
+    });
+</script>

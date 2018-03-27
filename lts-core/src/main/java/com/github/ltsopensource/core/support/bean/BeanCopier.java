@@ -5,9 +5,9 @@ package com.github.ltsopensource.core.support.bean;
  */
 public interface BeanCopier<Source, Target> {
 
-    /**
-     * 拷贝属性
-     */
-    void copyProps(Source source, Target target);
+	/**
+	 * 拷贝属性
+	 */
+	void copyProps(Source source, Target target);
 
 }

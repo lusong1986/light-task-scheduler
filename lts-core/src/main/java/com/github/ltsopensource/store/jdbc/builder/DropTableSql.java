@@ -11,34 +11,34 @@ import com.github.ltsopensource.store.jdbc.exception.JdbcException;
  */
 public class DropTableSql {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DropTableSql.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DropTableSql.class);
 
-    private SqlTemplate sqlTemplate;
-    private StringBuilder sql = new StringBuilder();
+	private SqlTemplate sqlTemplate;
+	private StringBuilder sql = new StringBuilder();
 
-    public DropTableSql(SqlTemplate sqlTemplate) {
-        this.sqlTemplate = sqlTemplate;
-    }
+	public DropTableSql(SqlTemplate sqlTemplate) {
+		this.sqlTemplate = sqlTemplate;
+	}
 
-    public DropTableSql drop(String table) {
-        sql.append("DROP TABLE IF EXISTS ").append(table);
-        return this;
-    }
+	public DropTableSql drop(String table) {
+		sql.append("DROP TABLE IF EXISTS ").append(table);
+		return this;
+	}
 
-    public boolean doDrop() {
+	public boolean doDrop() {
 
-        String finalSQL = sql.toString();
+		String finalSQL = sql.toString();
 
-        try {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(SQLFormatter.format(finalSQL));
-            }
+		try {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(SQLFormatter.format(finalSQL));
+			}
 
-            sqlTemplate.update(sql.toString());
-        } catch (Exception e) {
-            throw new JdbcException("Drop Table Error:" + SQLFormatter.format(finalSQL), e);
-        }
-        return true;
-    }
+			sqlTemplate.update(sql.toString());
+		} catch (Exception e) {
+			throw new JdbcException("Drop Table Error:" + SQLFormatter.format(finalSQL), e);
+		}
+		return true;
+	}
 
 }

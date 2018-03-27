@@ -1,18 +1,20 @@
 package com.github.ltsopensource.jobclient;
 
+import java.util.Map;
+
 import com.github.ltsopensource.autoconfigure.PropertiesConfigurationFactory;
 import com.github.ltsopensource.core.cluster.AbstractNodeBuilder;
 import com.github.ltsopensource.core.commons.utils.CollectionUtils;
 import com.github.ltsopensource.core.commons.utils.StringUtils;
 import com.github.ltsopensource.core.properties.JobClientProperties;
+import com.github.ltsopensource.jobclient.domain.JobClientAppContext;
+import com.github.ltsopensource.jobclient.domain.JobClientNode;
 import com.github.ltsopensource.jobclient.support.JobCompletedHandler;
-
-import java.util.Map;
 
 /**
  * @author Robert HG (254963746@qq.com) on 4/21/16.
  */
-public class JobClientBuilder extends AbstractNodeBuilder<JobClient, JobClientBuilder> {
+public class JobClientBuilder extends AbstractNodeBuilder<JobClient<JobClientNode, JobClientAppContext>, JobClientBuilder> {
 
     private JobCompletedHandler jobCompletedHandler;
 
@@ -22,11 +24,11 @@ public class JobClientBuilder extends AbstractNodeBuilder<JobClient, JobClientBu
     }
 
     @Override
-    protected JobClient build0() {
+    protected JobClient<JobClientNode, JobClientAppContext> build0() {
         JobClientProperties properties = PropertiesConfigurationFactory
                 .createPropertiesConfiguration(JobClientProperties.class, locations);
 
-        JobClient jobClient = buildByProperties(properties);
+        JobClient<JobClientNode, JobClientAppContext> jobClient = buildByProperties(properties);
 
         if (jobCompletedHandler != null) {
             jobClient.setJobCompletedHandler(jobCompletedHandler);
@@ -35,14 +37,14 @@ public class JobClientBuilder extends AbstractNodeBuilder<JobClient, JobClientBu
         return jobClient;
     }
 
-    public static JobClient buildByProperties(JobClientProperties properties) {
+    public static JobClient<JobClientNode, JobClientAppContext> buildByProperties(JobClientProperties properties) {
         properties.checkProperties();
 
-        JobClient jobClient;
+        JobClient<JobClientNode, JobClientAppContext> jobClient;
         if (properties.isUseRetryClient()) {
             jobClient = new RetryJobClient();
         } else {
-            jobClient = new JobClient();
+            jobClient = new JobClient<JobClientNode, JobClientAppContext>();
         }
         jobClient.setRegistryAddress(properties.getRegistryAddress());
         if (StringUtils.isNotEmpty(properties.getClusterName())) {

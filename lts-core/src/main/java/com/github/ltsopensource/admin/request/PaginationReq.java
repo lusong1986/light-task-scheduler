@@ -5,44 +5,44 @@ package com.github.ltsopensource.admin.request;
  */
 public class PaginationReq {
 
-    private Integer start = 0;
+	private Integer start = 0;
 
-    private Integer limit = 10;
+	private Integer limit = 10;
 
-    private String field;
+	private String field;
 
-    private String direction;
+	private String direction;
 
-    public String getField() {
-        return field;
-    }
+	public String getField() {
+		return field;
+	}
 
-    public void setField(String field) {
-        this.field = field;
-    }
+	public void setField(String field) {
+		this.field = field;
+	}
 
-    public String getDirection() {
-        return direction;
-    }
+	public String getDirection() {
+		return direction;
+	}
 
-    public void setDirection(String direction) {
-        this.direction = direction;
-    }
+	public void setDirection(String direction) {
+		this.direction = direction;
+	}
 
-    public Integer getLimit() {
-        return limit;
-    }
+	public Integer getLimit() {
+		return limit;
+	}
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
+	public void setLimit(Integer limit) {
+		this.limit = limit;
+	}
 
-    public Integer getStart() {
-        return start;
-    }
+	public Integer getStart() {
+		return start;
+	}
 
-    public void setStart(Integer start) {
-        this.start = start;
-    }
+	public void setStart(Integer start) {
+		this.start = start;
+	}
 
 }

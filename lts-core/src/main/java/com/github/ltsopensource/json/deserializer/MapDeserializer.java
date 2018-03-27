@@ -16,8 +16,8 @@ public class MapDeserializer implements Deserializer {
 
     public static final MapDeserializer INSTANCE = new MapDeserializer();
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T> T deserialize(Object object, Type type) {
+    @SuppressWarnings("unchecked")
+	public <T> T deserialize(Object object, Type type) {
 
         Map<Object, Object> map = createMap(type);
 

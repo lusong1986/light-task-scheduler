@@ -4,6 +4,7 @@ import com.github.ltsopensource.cmd.HttpCmdProc;
 import com.github.ltsopensource.cmd.HttpCmdRequest;
 import com.github.ltsopensource.cmd.HttpCmdResponse;
 import com.github.ltsopensource.core.cmd.HttpCmdNames;
+import com.github.ltsopensource.core.commons.utils.CatUtils;
 import com.github.ltsopensource.core.commons.utils.StringUtils;
 import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
 
@@ -13,36 +14,38 @@ import com.github.ltsopensource.tasktracker.domain.TaskTrackerAppContext;
  */
 public class JobTerminateCmd implements HttpCmdProc {
 
-    private TaskTrackerAppContext appContext;
+	private TaskTrackerAppContext appContext;
 
-    public JobTerminateCmd(TaskTrackerAppContext appContext) {
-        this.appContext = appContext;
-    }
+	public JobTerminateCmd(TaskTrackerAppContext appContext) {
+		this.appContext = appContext;
+	}
 
-    @Override
-    public String nodeIdentity() {
-        return appContext.getConfig().getIdentity();
-    }
+	@Override
+	public String nodeIdentity() {
+		return appContext.getConfig().getIdentity();
+	}
 
-    @Override
-    public String getCommand() {
-        return HttpCmdNames.HTTP_CMD_JOB_TERMINATE;
-    }
+	@Override
+	public String getCommand() {
+		return HttpCmdNames.HTTP_CMD_JOB_TERMINATE;
+	}
 
-    @Override
-    public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
+	@Override
+	public HttpCmdResponse execute(HttpCmdRequest request) throws Exception {
 
-        String jobId = request.getParam("jobId");
-        if (StringUtils.isEmpty(jobId)) {
-            return HttpCmdResponse.newResponse(false, "jobId can't be empty");
-        }
+		String jobId = request.getParam("jobId");
+		if (StringUtils.isEmpty(jobId)) {
+			return HttpCmdResponse.newResponse(false, "jobId can't be empty");
+		}
 
-        if (!appContext.getRunnerPool().getRunningJobManager().running(jobId)) {
-            return HttpCmdResponse.newResponse(false, "jobId dose not running in this TaskTracker now");
-        }
+		if (!appContext.getRunnerPool().getRunningJobManager().running(jobId)) {
+			CatUtils.recordEvent(false, jobId, "JOB_TERMINATE");
+			return HttpCmdResponse.newResponse(false, "This job is not running in this tasktracker now");
+		}
 
-        appContext.getRunnerPool().getRunningJobManager().terminateJob(jobId);
+		appContext.getRunnerPool().getRunningJobManager().terminateJob(jobId);
+		CatUtils.recordEvent(true, jobId, "JOB_TERMINATE");
 
-        return HttpCmdResponse.newResponse(true, "Execute terminate Command success");
-    }
+		return HttpCmdResponse.newResponse(true, "Execute terminate Command success");
+	}
 }

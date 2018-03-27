@@ -5,7 +5,9 @@ package com.github.ltsopensource.core.json;
  */
 public class JSONException extends RuntimeException {
 
-    public JSONException() {
+	private static final long serialVersionUID = 8719054708353164412L;
+
+	public JSONException() {
         super();
     }
 
