@@ -4,6 +4,7 @@
 target
 *.class
 *.pmd
+*.factorypath
 target/
 *.iml
 .idea/

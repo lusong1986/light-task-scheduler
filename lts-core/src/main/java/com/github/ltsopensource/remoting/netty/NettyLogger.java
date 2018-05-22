@@ -330,5 +330,41 @@ public class NettyLogger {
 				break;
 			}
 		}
+
+		@Override
+		public void trace(Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void debug(Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void info(Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void warn(Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void error(Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void log(InternalLogLevel level, Throwable t) {
+			// TODO Auto-generated method stub
+			
+		}
 	}
 }
